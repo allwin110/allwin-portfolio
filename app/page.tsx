@@ -62,8 +62,25 @@ export default function Home() {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [contactSubmitted, setContactSubmitted] = useState(false);
+  const [messageLength, setMessageLength] = useState(0);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [mounted, setMounted] = useState(false);
+  
+  // Profile picture rotation parameters
+  const [profileIndex, setProfileIndex] = useState(0);
+  const profiles = [
+    "/images/profile1.jpg",
+    "/images/profile2.jpg",
+    "/images/profile3.jpg"
+  ];
+
+  // Rotate profile image every 3 seconds dynamically
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProfileIndex((prev) => (prev + 1) % profiles.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
 
   // Monitor scroll for visual border-progress effect
   useEffect(() => {
@@ -116,6 +133,11 @@ export default function Home() {
 
       {/* Scroll Progress Line */}
       <div 
+        role="progressbar"
+        aria-valuenow={Math.round(scrollProgress)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label="Reading progress"
         className="fixed top-0 left-0 h-1 bg-gradient-to-r from-violet-500 via-cyan-400 to-emerald-400 z-50 transition-all duration-100" 
         style={{ width: `${scrollProgress}%` }}
       />
@@ -176,8 +198,9 @@ export default function Home() {
 
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white p-1"
+              className="text-zinc-500 hover:text-zinc-955 dark:text-zinc-400 dark:hover:text-white p-1 cursor-pointer"
               aria-label="Toggle navigation menu"
+              aria-expanded={mobileMenuOpen}
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {mobileMenuOpen ? (
@@ -277,14 +300,23 @@ export default function Home() {
             {/* Premium Rounded Vertical Frame */}
             <div className="relative w-full max-w-[310px] aspect-[3/4] p-3.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/80 rounded-[44px] shadow-2xl dark:shadow-zinc-950/40 hover:scale-[1.01] transition-transform duration-500">
               <div className="relative w-full h-full rounded-[30px] overflow-hidden bg-zinc-50 dark:bg-zinc-800">
-                <Image
-                  src="/images/profile.jpg"
-                  alt="Allwin Alex - Senior UX Designer"
-                  fill
-                  priority
-                  sizes="310px"
-                  className="object-cover object-top transition-transform duration-500"
-                />
+                {profiles.map((src, idx) => (
+                  <div
+                    key={src}
+                    className={`absolute inset-0 transition-opacity duration-1000 ${
+                      idx === profileIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+                    }`}
+                  >
+                    <Image
+                      src={src}
+                      alt={`Allwin Alex - Senior UX Designer ${idx + 1}`}
+                      fill
+                      priority={idx === 0}
+                      sizes="310px"
+                      className="object-cover object-top"
+                    />
+                  </div>
+                ))}
               </div>
 
               {/* Floating Badge 1 (Top Left — overlapping card) */}
@@ -425,9 +457,9 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {filteredProjects.map((project) => (
             <div 
-              key={project.id}
+              key={`${activeFilter}-${project.id}`}
               onClick={() => { setSelectedProject(project); setActiveImageIndex(0); }}
-              className="group cursor-pointer bg-white dark:bg-zinc-900/30 border border-zinc-200/80 dark:border-zinc-800/40 rounded-3xl overflow-hidden hover:border-zinc-350 dark:hover:border-zinc-700/80 transition-all hover:scale-[1.01] flex flex-col h-full shadow-sm dark:shadow-lg"
+              className="project-card-transition group cursor-pointer bg-white dark:bg-zinc-900/30 border border-zinc-200/80 dark:border-zinc-800/40 rounded-3xl overflow-hidden hover:border-zinc-350 dark:hover:border-zinc-700/80 transition-all hover:scale-[1.01] flex flex-col h-full shadow-sm dark:shadow-lg"
             >
               {/* Image Frame */}
               <div className="relative h-56 bg-zinc-900 overflow-hidden">
@@ -699,6 +731,26 @@ export default function Home() {
               <form 
                 onSubmit={(e) => {
                   e.preventDefault();
+                  const target = e.currentTarget;
+                  const name = (target.elements.namedItem('name') as HTMLInputElement).value;
+                  const email = (target.elements.namedItem('email') as HTMLInputElement).value;
+                  const message = (target.elements.namedItem('message') as HTMLTextAreaElement).value;
+
+                  // 1. WhatsApp URL construction (Indian dialing format: 919677193923)
+                  const whatsappText = `*New Portfolio Inquiry*\n\n*Name:* ${name}\n*Email:* ${email}\n\n*Message:*\n${message}`;
+                  const whatsappUrl = `https://api.whatsapp.com/send?phone=919677193923&text=${encodeURIComponent(whatsappText)}`;
+
+                  // 2. Email Mailto URL construction
+                  const emailSubject = `Portfolio Inquiry from ${name}`;
+                  const emailBody = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
+                  const mailtoUrl = `mailto:allwin110@live.in?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+
+                  // Route both channels cleanly
+                  window.location.href = mailtoUrl;
+                  setTimeout(() => {
+                    window.open(whatsappUrl, '_blank');
+                  }, 400);
+
                   setContactSubmitted(true);
                 }}
                 className="flex flex-col gap-5"
@@ -708,6 +760,7 @@ export default function Home() {
                   <input 
                     type="text" 
                     id="name" 
+                    name="name"
                     required 
                     placeholder="Jane Doe" 
                     className="w-full bg-zinc-50 border border-zinc-200 focus:border-violet-500 focus:bg-white text-zinc-900 dark:bg-zinc-950 dark:border-zinc-800 dark:focus:bg-zinc-950 dark:text-zinc-200 rounded-xl px-4 py-3 text-sm outline-none transition-all font-medium"
@@ -718,17 +771,24 @@ export default function Home() {
                   <input 
                     type="email" 
                     id="email" 
+                    name="email"
                     required 
                     placeholder="jane@company.com" 
                     className="w-full bg-zinc-50 border border-zinc-200 focus:border-violet-500 focus:bg-white text-zinc-900 dark:bg-zinc-950 dark:border-zinc-800 dark:focus:bg-zinc-950 dark:text-zinc-200 rounded-xl px-4 py-3 text-sm outline-none transition-all font-medium"
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label htmlFor="message" className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Brief Message</label>
+                  <div className="flex justify-between items-center">
+                    <label htmlFor="message" className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Brief Message</label>
+                    <span className="text-[10px] font-bold text-zinc-450 dark:text-zinc-550">{messageLength}/500</span>
+                  </div>
                   <textarea 
                     id="message" 
+                    name="message"
                     rows={4} 
                     required 
+                    maxLength={500}
+                    onChange={(e) => setMessageLength(e.target.value.length)}
                     placeholder="Describe your project, timeline, and expectations..." 
                     className="w-full bg-zinc-50 border border-zinc-200 focus:border-violet-500 focus:bg-white text-zinc-900 dark:bg-zinc-950 dark:border-zinc-800 dark:focus:bg-zinc-950 dark:text-zinc-200 rounded-xl px-4 py-3 text-sm outline-none transition-all resize-none font-medium"
                   />
@@ -739,6 +799,9 @@ export default function Home() {
                 >
                   Send Message
                 </button>
+                <p className="text-[10px] text-center font-bold text-zinc-400 dark:text-zinc-550 tracking-wide mt-1">
+                  💡 Submitting will immediately open WhatsApp chat & compose a pre-filled email.
+                </p>
               </form>
             )}
           </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState } from 'react';
+import { use, useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { projectsData } from '../../data/projects';
@@ -14,6 +14,26 @@ export default function ProjectPage({
   const project = projectsData.find((p) => p.id === id);
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+  // Esc key listener & scroll lock for Lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsLightboxOpen(false);
+      }
+    };
+    if (isLightboxOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [isLightboxOpen]);
 
   if (!project) {
     return (
@@ -78,7 +98,10 @@ export default function ProjectPage({
 
         {/* Dynamic Visual Screen Header Grid */}
         <section className="mb-12">
-          <div className="relative w-full h-[280px] sm:h-[420px] md:h-[580px] bg-zinc-950 rounded-[32px] md:rounded-[48px] overflow-hidden border border-zinc-200/50 dark:border-zinc-800/50 shadow-2xl select-none">
+          <div 
+            onClick={() => setIsLightboxOpen(true)}
+            className="relative w-full h-[280px] sm:h-[420px] md:h-[580px] bg-zinc-950 rounded-[32px] md:rounded-[48px] overflow-hidden border border-zinc-200/50 dark:border-zinc-800/50 shadow-2xl select-none cursor-zoom-in group"
+          >
             <Image 
               src={displayImage}
               alt={displayImageName}
@@ -93,12 +116,22 @@ export default function ProjectPage({
               {displayImageName}
             </div>
 
+            {/* Premium Zoom indicator */}
+            <div className="absolute top-6 right-6 bg-zinc-950/70 border border-zinc-800/60 backdrop-blur-md p-2.5 rounded-full text-white/80 group-hover:text-white transition-colors shadow-2xl pointer-events-none z-10">
+              <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+              </svg>
+            </div>
+
             {/* Slider Arrows */}
             {project.images && project.images.length > 1 && (
               <>
                 <button
-                  onClick={() => setActiveImageIndex((prev) => (prev === 0 ? project.images!.length - 1 : prev - 1))}
-                  className="absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 bg-zinc-950/80 hover:bg-zinc-800 border border-zinc-800/60 backdrop-blur-md text-white rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer shadow-2xl z-10"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveImageIndex((prev) => (prev === 0 ? project.images!.length - 1 : prev - 1));
+                  }}
+                  className="absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 bg-zinc-950/80 hover:bg-zinc-800 border border-zinc-800/60 backdrop-blur-md text-white rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer shadow-2xl z-20"
                   aria-label="Previous image"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -106,8 +139,11 @@ export default function ProjectPage({
                   </svg>
                 </button>
                 <button
-                  onClick={() => setActiveImageIndex((prev) => (prev === project.images!.length - 1 ? 0 : prev + 1))}
-                  className="absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 bg-zinc-950/80 hover:bg-zinc-800 border border-zinc-800/60 backdrop-blur-md text-white rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer shadow-2xl z-10"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveImageIndex((prev) => (prev === project.images!.length - 1 ? 0 : prev + 1));
+                  }}
+                  className="absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 bg-zinc-950/80 hover:bg-zinc-800 border border-zinc-800/60 backdrop-blur-md text-white rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer shadow-2xl z-20"
                   aria-label="Next image"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -163,6 +199,44 @@ export default function ProjectPage({
       <footer className="border-t border-zinc-200 dark:border-zinc-900 py-12 text-center text-xs text-zinc-450 dark:text-zinc-550 max-w-6xl mx-auto relative z-10">
         <p>© 2026 {project.title}. All rights reserved.</p>
       </footer>
+
+      {/* Premium Lightbox Modal */}
+      {isLightboxOpen && (
+        <div 
+          className="fixed inset-0 bg-zinc-950/98 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4 sm:p-8 animate-fade-in"
+          onClick={() => setIsLightboxOpen(false)}
+        >
+          {/* Close button */}
+          <button 
+            onClick={() => setIsLightboxOpen(false)}
+            className="absolute top-6 right-6 w-12 h-12 bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-white rounded-full flex items-center justify-center transition-all cursor-pointer shadow-2xl hover:scale-110 active:scale-90"
+            aria-label="Close image preview"
+          >
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          {/* Lightbox Image Frame */}
+          <div 
+            className="relative w-full max-w-6xl aspect-[3/2] rounded-2xl overflow-hidden border border-zinc-900 shadow-2xl select-none"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image 
+              src={displayImage}
+              alt={displayImageName}
+              fill
+              className="object-contain"
+            />
+          </div>
+
+          {/* Lightbox Caption */}
+          <div className="mt-6 text-center select-none max-w-xl">
+            <h4 className="text-sm font-bold text-zinc-150 tracking-wide uppercase">{displayImageName}</h4>
+            <p className="text-zinc-500 text-xs mt-1.5 font-medium">Click anywhere outside or press ESC to exit</p>
+          </div>
+        </div>
+      )}
 
     </div>
   );
@@ -235,25 +309,25 @@ function CloudOrchestrationLayout({ project }: { project: any }) {
             </div>
           </div>
 
-          <div className="relative bg-zinc-900 border border-zinc-800 p-8 rounded-3xl shadow-2xl text-zinc-100 overflow-hidden">
+          <div className="relative bg-white dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800/40 backdrop-blur-sm p-8 rounded-3xl shadow-sm overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-radial-gradient from-violet-650/10 to-transparent pointer-events-none" />
             <div className="flex items-center gap-2.5 mb-3">
-              <span className="px-2.5 py-1 bg-violet-600/30 border border-violet-500/30 text-[9px] font-black tracking-widest text-violet-400 uppercase rounded-md">Core Differentiator</span>
-              <h2 className="text-xs uppercase font-extrabold tracking-widest text-zinc-400">AI-Assisted Workflow</h2>
+              <span className="px-2.5 py-1 bg-violet-100 dark:bg-violet-650/30 border border-violet-200 dark:border-violet-500/30 text-[9px] font-black tracking-widest text-violet-650 dark:text-violet-400 uppercase rounded-md">Core Differentiator</span>
+              <h2 className="text-xs uppercase font-extrabold tracking-widest text-zinc-400 dark:text-zinc-555">AI-Assisted Workflow</h2>
             </div>
-            <h3 className="text-2xl font-black text-white mb-6 leading-tight">Revolutionizing discovery & validation with modern AI integration.</h3>
+            <h3 className="text-2xl font-black text-zinc-900 dark:text-white mb-6 leading-tight">Revolutionizing discovery & validation with modern AI integration.</h3>
             <div className="flex flex-col gap-5">
               {[
                 { label: "AI-Assisted PRD Analysis", desc: "Leveraged large language model clusters to automatically parse massive PRDs into structured workflow clusters. Successfully identified repeating operational patterns and edge cases." },
                 { label: "Research Synthesis Automation", desc: "Clustered qualitative stakeholder feedback and mapped out hidden workflow inconsistencies. Surface dependency relationships and accelerated research discovery cycles by nearly 60%." },
                 { label: "Cursor Prototyping Pipeline", desc: "Used advanced editor assistants to code, validate, and preview interactive components (like complex operational tables and dashboard flex-layouts) in real-time browser states." }
               ].map((proc, idx) => (
-                <div key={idx} className="bg-zinc-950/40 border border-zinc-800/50 p-5 rounded-2xl flex flex-col gap-2">
-                  <h4 className="text-sm font-black text-cyan-400 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                <div key={idx} className="bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200/60 dark:border-zinc-800/50 p-5 rounded-2xl flex flex-col gap-2">
+                  <h4 className="text-sm font-black text-violet-600 dark:text-cyan-400 flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-violet-600 dark:bg-cyan-400" />
                     {proc.label}
                   </h4>
-                  <p className="text-zinc-400 text-xs leading-relaxed">{proc.desc}</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-xs leading-relaxed">{proc.desc}</p>
                 </div>
               ))}
             </div>
@@ -496,17 +570,17 @@ function DeveloperExperienceLayout({ project }: { project: any }) {
             </div>
           </div>
 
-          <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl shadow-2xl text-zinc-100">
-            <h2 className="text-xs uppercase font-extrabold tracking-widest text-zinc-400 mb-3 block">AI-Assisted UX Pipeline</h2>
-            <h3 className="text-2xl font-black text-white mb-6 leading-tight">Leveraging Advanced Workflows</h3>
+          <div className="bg-white dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800/40 backdrop-blur-sm p-8 rounded-3xl shadow-sm">
+            <h2 className="text-xs uppercase font-extrabold tracking-widest text-zinc-400 dark:text-zinc-550 mb-3 block">AI-Assisted UX Pipeline</h2>
+            <h3 className="text-2xl font-black text-zinc-900 dark:text-white mb-6 leading-tight">Leveraging Advanced Workflows</h3>
             <div className="flex flex-col gap-4 text-xs">
-              <div className="bg-zinc-950/40 border border-zinc-850 p-4 rounded-xl">
-                <span className="font-extrabold text-cyan-400 block mb-1">Requirements Synthesis</span>
-                <p className="text-zinc-400 leading-relaxed font-medium">Accelerated PRD requirement summarization, dependency mapping, and qualitative feedback clustering using advanced synthesis tools.</p>
+              <div className="bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200/60 dark:border-zinc-850 p-4 rounded-xl">
+                <span className="font-extrabold text-violet-600 dark:text-cyan-400 block mb-1">Requirements Synthesis</span>
+                <p className="text-zinc-650 dark:text-zinc-400 leading-relaxed font-medium">Accelerated PRD requirement summarization, dependency mapping, and qualitative feedback clustering using advanced synthesis tools.</p>
               </div>
-              <div className="bg-zinc-950/40 border border-zinc-850 p-4 rounded-xl">
-                <span className="font-extrabold text-cyan-400 block mb-1">Cursor Feasibility Validation</span>
-                <p className="text-zinc-400 leading-relaxed font-medium">Validated frontend implementation details, responsive layout patterns, and enterprise table behaviors in browser runtime environments to bridge designs with engineering constraints.</p>
+              <div className="bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200/60 dark:border-zinc-850 p-4 rounded-xl">
+                <span className="font-extrabold text-violet-600 dark:text-cyan-400 block mb-1">Cursor Feasibility Validation</span>
+                <p className="text-zinc-650 dark:text-zinc-400 leading-relaxed font-medium">Validated frontend implementation details, responsive layout patterns, and enterprise table behaviors in browser runtime environments to bridge designs with engineering constraints.</p>
               </div>
             </div>
           </div>
@@ -614,21 +688,21 @@ function AIOnboardingLayout({ project }: { project: any }) {
             </div>
           </div>
 
-          <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl shadow-2xl text-zinc-100">
-            <h2 className="text-xs uppercase font-extrabold tracking-widest text-zinc-400 mb-3 block">AI-Assisted Features</h2>
-            <h3 className="text-2xl font-black text-white mb-6 leading-tight">Thoughtful Administrative Automation</h3>
-            <div className="flex flex-col gap-4 text-xs text-zinc-400 font-medium">
-              <div className="flex gap-3 bg-zinc-950/40 border border-zinc-850 p-4 rounded-xl">
-                <span className="text-violet-400 font-black">⚙</span>
+          <div className="bg-white dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800/40 backdrop-blur-sm p-8 rounded-3xl shadow-sm">
+            <h2 className="text-xs uppercase font-extrabold tracking-widest text-zinc-400 dark:text-zinc-550 mb-3 block">AI-Assisted Features</h2>
+            <h3 className="text-2xl font-black text-zinc-900 dark:text-white mb-6 leading-tight">Thoughtful Administrative Automation</h3>
+            <div className="flex flex-col gap-4 text-xs text-zinc-650 dark:text-zinc-400 font-medium">
+              <div className="flex gap-3 bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200/60 dark:border-zinc-850 p-4 rounded-xl">
+                <span className="text-violet-650 dark:text-violet-400 font-black">⚙</span>
                 <div>
-                  <h4 className="font-extrabold text-cyan-400 mb-1">Intelligent Workflow Guidance</h4>
+                  <h4 className="font-extrabold text-violet-600 dark:text-cyan-400 mb-1">Intelligent Workflow Guidance</h4>
                   <p className="leading-relaxed">Instructs stakeholders on the exact next actions and documentation requirements automatically.</p>
                 </div>
               </div>
-              <div className="flex gap-3 bg-zinc-950/40 border border-zinc-850 p-4 rounded-xl">
-                <span className="text-violet-400 font-black">⚙</span>
+              <div className="flex gap-3 bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200/60 dark:border-zinc-850 p-4 rounded-xl">
+                <span className="text-violet-650 dark:text-violet-400 font-black">⚙</span>
                 <div>
-                  <h4 className="font-extrabold text-cyan-400 mb-1">Automated Milestone Observability</h4>
+                  <h4 className="font-extrabold text-violet-600 dark:text-cyan-400 mb-1">Automated Milestone Observability</h4>
                   <p className="leading-relaxed">Tracks and communicates progress instantly without manual intervention or spreadsheets.</p>
                 </div>
               </div>
