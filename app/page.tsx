@@ -5,6 +5,28 @@ import Image from "next/image";
 import Link from "next/link";
 import { projectsData } from "./data/projects";
 
+// Reusable animated count-up component
+function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: string }) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let start = 0;
+    const duration = 1200; // 1.2s duration
+    const stepTime = Math.max(Math.floor(duration / target), 20);
+    const timer = setInterval(() => {
+      start += 1;
+      setCount(start);
+      if (start >= target) {
+        clearInterval(timer);
+      }
+    }, stepTime);
+
+    return () => clearInterval(timer);
+  }, [target]);
+
+  return <>{count}{suffix}</>;
+}
+
 // Official Career Timeline from Resume
 const experienceTimeline = [
   {
@@ -69,9 +91,9 @@ export default function Home() {
   // Profile picture rotation parameters
   const [profileIndex, setProfileIndex] = useState(0);
   const profiles = [
-    "/images/profile1.jpg",
-    "/images/profile2.jpg",
-    "/images/profile3.jpg"
+    "/images/profile1.jpg?v=2",
+    "/images/profile2.jpg?v=2",
+    "/images/profile3.jpg?v=2"
   ];
 
   // Rotate profile image every 3 seconds dynamically
@@ -148,24 +170,35 @@ export default function Home() {
           <a href="#home" className="text-xl font-bold tracking-tight bg-gradient-to-r from-violet-600 to-cyan-500 dark:from-violet-400 dark:to-cyan-400 bg-clip-text text-transparent hover:opacity-90 transition-opacity">
             ALLWIN ALEX.
           </a>
-          
-          <div className="hidden md:flex items-center gap-6">
-            <a href="#about" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">About</a>
-            <a href="#projects" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Projects</a>
-            <a href="#experience" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Experience</a>
-            <a href="#contact" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">Contact</a>
+             <div className="hidden md:flex items-center gap-6">
+            <a href="#about" className="relative group text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors py-1">
+              About
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 group-hover:w-full h-0.5 bg-violet-600 dark:bg-violet-400 transition-all duration-300" />
+            </a>
+            <a href="#projects" className="relative group text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors py-1">
+              Projects
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 group-hover:w-full h-0.5 bg-violet-600 dark:bg-violet-400 transition-all duration-300" />
+            </a>
+            <a href="#experience" className="relative group text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors py-1">
+              Experience
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 group-hover:w-full h-0.5 bg-violet-600 dark:bg-violet-400 transition-all duration-300" />
+            </a>
+            <a href="#contact" className="relative group text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors py-1">
+              Contact
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 group-hover:w-full h-0.5 bg-violet-600 dark:bg-violet-400 transition-all duration-300" />
+            </a>
                  {/* Theme Toggle Button */}
             <button
               onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-              className="p-2.5 text-zinc-500 hover:text-zinc-955 dark:text-zinc-400 dark:hover:text-white rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 transition-colors cursor-pointer border border-zinc-200/20"
+              className="group p-2.5 text-zinc-500 hover:text-zinc-955 dark:text-zinc-400 dark:hover:text-white rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 active:scale-90 transition-all cursor-pointer border border-zinc-200/20"
               aria-label="Toggle theme"
             >
               {theme === 'light' ? (
-                <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-4.5 h-4.5 group-hover:rotate-45 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                 </svg>
               ) : (
-                <svg className="w-4.5 h-4.5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-4.5 h-4.5 text-amber-400 group-hover:rotate-90 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
                 </svg>
               )}
@@ -182,15 +215,15 @@ export default function Home() {
           <div className="flex items-center gap-2 md:hidden">
             <button
               onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-              className="p-2 text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 transition-colors"
+              className="group p-2 text-zinc-500 hover:text-zinc-955 dark:text-zinc-400 dark:hover:text-white rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 active:scale-90 transition-all cursor-pointer"
               aria-label="Toggle theme"
             >
               {theme === 'light' ? (
-                <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-4.5 h-4.5 group-hover:rotate-45 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                 </svg>
               ) : (
-                <svg className="w-4.5 h-4.5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-4.5 h-4.5 text-amber-400 group-hover:rotate-90 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
                 </svg>
               )}
@@ -265,30 +298,30 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 mt-2 w-full sm:w-auto">
               <a 
                 href="#projects" 
-                className="inline-flex items-center justify-center px-6 py-3.5 bg-zinc-950 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-950 font-bold rounded-full transition-all text-sm gap-2 shadow-md cursor-pointer"
+                className="group inline-flex items-center justify-center px-6 py-3.5 bg-zinc-950 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-950 font-bold rounded-full transition-all text-sm gap-2 shadow-md cursor-pointer active:scale-[0.98]"
               >
-                View Case Studies <span className="text-xs">→</span>
+                View Case Studies <span className="text-xs group-hover:translate-x-1 transition-transform duration-300">→</span>
               </a>
               <a 
                 href="#contact" 
-                className="inline-flex items-center justify-center px-6 py-3.5 bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-200 font-bold rounded-full transition-all text-sm gap-2 shadow-sm cursor-pointer"
+                className="group inline-flex items-center justify-center px-6 py-3.5 bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-200 font-bold rounded-full transition-all text-sm gap-2 shadow-sm cursor-pointer active:scale-[0.98]"
               >
-                Resume <span className="text-xs">↓</span>
+                Resume <span className="text-xs group-hover:translate-y-0.5 transition-transform duration-300">↓</span>
               </a>
             </div>
 
             {/* Bottom Stats Metrics */}
             <div className="grid grid-cols-3 gap-6 pt-6 border-t border-zinc-200/80 dark:border-zinc-800/60 w-full max-w-lg mt-2">
               <div>
-                <span className="text-3xl md:text-4xl font-black text-zinc-900 dark:text-white block">9+</span>
+                <span className="text-3xl md:text-4xl font-black text-zinc-900 dark:text-white block"><AnimatedCounter target={9} suffix="+" /></span>
                 <span className="text-[10px] md:text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block mt-1">Years Experience</span>
               </div>
               <div>
-                <span className="text-3xl md:text-4xl font-black text-zinc-900 dark:text-white block">30+</span>
+                <span className="text-3xl md:text-4xl font-black text-zinc-900 dark:text-white block"><AnimatedCounter target={30} suffix="+" /></span>
                 <span className="text-[10px] md:text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block mt-1">Enterprise Projects</span>
               </div>
               <div>
-                <span className="text-3xl md:text-4xl font-black text-zinc-900 dark:text-white block">5+</span>
+                <span className="text-3xl md:text-4xl font-black text-zinc-900 dark:text-white block"><AnimatedCounter target={5} suffix="+" /></span>
                 <span className="text-[10px] md:text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block mt-1">AI Workflows</span>
               </div>
             </div>
@@ -343,15 +376,15 @@ export default function Home() {
       <section id="about" className="max-w-4xl mx-auto py-24 px-6 md:px-0 border-t border-zinc-200 dark:border-zinc-900">
         <div className="flex flex-col gap-4 mb-12">
           <span className="text-xs font-bold uppercase tracking-widest text-violet-600 dark:text-violet-400">About Me</span>
-          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-950 dark:text-white">The SaaS & Infra Specialist</h2>
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-955 dark:text-white">The SaaS & Infra Specialist</h2>
         </div>
 
         {/* Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Large Bio Card */}
-          <div className="md:col-span-2 bg-white dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800/40 backdrop-blur-sm p-8 rounded-3xl flex flex-col justify-between gap-6 hover:border-zinc-350 dark:hover:border-zinc-800/80 transition-all shadow-sm dark:shadow-none animate-fade-in">
+          <div className="md:col-span-2 bg-white dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800/40 backdrop-blur-sm p-8 rounded-3xl flex flex-col justify-between gap-6 hover:border-zinc-350 dark:hover:border-zinc-800/80 hover:-translate-y-1 hover:shadow-lg hover:shadow-violet-500/5 dark:hover:shadow-violet-400/5 transition-all duration-300 shadow-sm dark:shadow-none animate-fade-in">
             <div className="flex flex-col gap-4">
-              <h3 className="text-2xl font-bold text-zinc-950 dark:text-white">Allwin Alex</h3>
+              <h3 className="text-2xl font-bold text-zinc-955 dark:text-white">Allwin Alex</h3>
               <p className="text-zinc-650 dark:text-zinc-400 text-sm leading-relaxed">
                 Senior Product Designer with 9+ years of experience designing enterprise SaaS platforms, operational systems, and infrastructure-focused workflows. I specialize in enterprise UX, AI-assisted design workflows, scalable design systems, accessibility improvements, and implementation-aware product delivery.
               </p>
@@ -367,7 +400,7 @@ export default function Home() {
           </div>
 
           {/* Experience Statistics Card */}
-          <div className="bg-gradient-to-br from-violet-100/50 to-zinc-50 dark:from-violet-900/10 dark:to-zinc-900/40 border border-violet-200/50 dark:border-violet-900/20 backdrop-blur-sm p-8 rounded-3xl flex flex-col justify-between hover:border-violet-300 dark:hover:border-violet-500/30 transition-all shadow-sm">
+          <div className="bg-gradient-to-br from-violet-100/50 to-zinc-50 dark:from-violet-900/10 dark:to-zinc-900/40 border border-violet-200/50 dark:border-violet-900/20 backdrop-blur-sm p-8 rounded-3xl flex flex-col justify-between hover:border-violet-300 dark:hover:border-violet-500/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-violet-500/5 dark:hover:shadow-violet-400/5 transition-all duration-300 shadow-sm">
             <h3 className="text-zinc-500 dark:text-zinc-400 text-xs font-bold uppercase tracking-wider">Career Metrics</h3>
             <div className="flex flex-col gap-6 my-6">
               <div>
@@ -379,12 +412,12 @@ export default function Home() {
                 <p className="text-zinc-500 dark:text-zinc-400 text-xs mt-1">Onboarding Simplicity Boost</p>
               </div>
             </div>
-            <div className="text-zinc-500 dark:text-zinc-500 text-[10px] font-semibold">WCAG AA Certified.</div>
+            <div className="text-zinc-500 dark:text-zinc-505 text-[10px] font-semibold">WCAG AA Certified.</div>
           </div>
 
           {/* Interactive Skills Card */}
-          <div className="md:col-span-2 bg-white dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800/40 backdrop-blur-sm p-8 rounded-3xl hover:border-zinc-300 dark:hover:border-zinc-800/80 transition-all shadow-sm dark:shadow-none">
-            <h3 className="text-lg font-bold text-zinc-950 dark:text-white mb-6">Expertise & Skills</h3>
+          <div className="md:col-span-2 bg-white dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800/40 backdrop-blur-sm p-8 rounded-3xl hover:border-zinc-300 dark:hover:border-zinc-800/80 hover:-translate-y-1 hover:shadow-lg hover:shadow-violet-500/5 dark:hover:shadow-violet-400/5 transition-all duration-300 shadow-sm dark:shadow-none">
+            <h3 className="text-lg font-bold text-zinc-955 dark:text-white mb-6">Expertise & Skills</h3>
             <div className="flex flex-wrap gap-2.5">
               {[
                 "Enterprise Product Design",
@@ -404,7 +437,7 @@ export default function Home() {
               ].map((skill, index) => (
                 <span 
                   key={index} 
-                  className="px-4 py-2 bg-zinc-100 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-350 rounded-xl text-xs font-semibold text-zinc-650 dark:text-zinc-300 cursor-default hover:text-zinc-950 dark:hover:text-white transition-colors"
+                  className="px-4 py-2 bg-zinc-100 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-350 rounded-xl text-xs font-semibold text-zinc-650 dark:text-zinc-300 cursor-default hover:text-zinc-950 dark:hover:text-white hover:-translate-y-0.5 hover:scale-105 transition-all duration-200"
                 >
                   {skill}
                 </span>
@@ -413,7 +446,7 @@ export default function Home() {
           </div>
 
           {/* Location / Availability Card */}
-          <div className="bg-white dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800/40 backdrop-blur-sm p-8 rounded-3xl flex flex-col justify-between hover:border-zinc-300 dark:hover:border-zinc-800/80 transition-all shadow-sm dark:shadow-none">
+          <div className="bg-white dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800/40 backdrop-blur-sm p-8 rounded-3xl flex flex-col justify-between hover:border-zinc-350 dark:hover:border-zinc-800/80 hover:-translate-y-1 hover:shadow-lg hover:shadow-violet-500/5 dark:hover:shadow-violet-400/5 transition-all duration-300 shadow-sm dark:shadow-none">
             <h3 className="text-zinc-500 dark:text-zinc-400 text-xs font-bold uppercase tracking-wider">Hometown</h3>
             <div className="my-4">
               <span className="text-xl font-bold text-zinc-955 dark:text-white block">Chennai, TN</span>
@@ -459,7 +492,7 @@ export default function Home() {
             <div 
               key={`${activeFilter}-${project.id}`}
               onClick={() => { setSelectedProject(project); setActiveImageIndex(0); }}
-              className="project-card-transition group cursor-pointer bg-white dark:bg-zinc-900/30 border border-zinc-200/80 dark:border-zinc-800/40 rounded-3xl overflow-hidden hover:border-zinc-350 dark:hover:border-zinc-700/80 transition-all hover:scale-[1.01] flex flex-col h-full shadow-sm dark:shadow-lg"
+              className="project-card-transition group cursor-pointer bg-white dark:bg-zinc-900/30 border border-zinc-200/80 dark:border-zinc-800/40 rounded-3xl overflow-hidden hover:border-zinc-350 dark:hover:border-zinc-700/80 hover:-translate-y-1 hover:scale-[1.01] hover:shadow-xl hover:shadow-cyan-500/5 dark:hover:shadow-cyan-400/5 transition-all duration-300 flex flex-col h-full shadow-sm dark:shadow-lg"
             >
               {/* Image Frame */}
               <div className="relative h-56 bg-zinc-900 overflow-hidden">
@@ -505,7 +538,7 @@ export default function Home() {
       {selectedProject && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-zinc-950/80 dark:bg-zinc-950/90 backdrop-blur-md animate-fade-in" onClick={() => setSelectedProject(null)}>
           <div 
-            className="relative w-full max-w-4xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
+            className="relative w-full max-w-4xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] animate-zoom-in"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header Frame */}
@@ -643,7 +676,7 @@ export default function Home() {
           {experienceTimeline.map((job, index) => (
             <div key={index} className="relative pl-8 group">
               {/* Dot marker */}
-              <div className="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-zinc-300 dark:bg-zinc-800 group-hover:bg-violet-600 dark:group-hover:bg-violet-500 border border-zinc-50 dark:border-zinc-950 transition-colors" />
+              <div className="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-zinc-300 dark:bg-zinc-800 group-hover:bg-violet-600 dark:group-hover:bg-violet-500 border border-zinc-50 dark:border-zinc-950 group-hover:scale-125 group-hover:ring-4 group-hover:ring-violet-500/20 dark:group-hover:ring-violet-400/20 transition-all duration-300" />
               
               <div className="flex flex-col gap-2 bg-white dark:bg-zinc-900/20 border border-zinc-200 dark:border-zinc-900 dark:hover:border-zinc-800 p-6 rounded-2xl transition-all shadow-sm dark:shadow-none">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
@@ -755,33 +788,33 @@ export default function Home() {
                 }}
                 className="flex flex-col gap-5"
               >
-                <div className="flex flex-col gap-1.5">
-                  <label htmlFor="name" className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Your Name</label>
+                <div className="relative">
                   <input 
                     type="text" 
                     id="name" 
                     name="name"
                     required 
-                    placeholder="Jane Doe" 
-                    className="w-full bg-zinc-50 border border-zinc-200 focus:border-violet-500 focus:bg-white text-zinc-900 dark:bg-zinc-950 dark:border-zinc-800 dark:focus:bg-zinc-950 dark:text-zinc-200 rounded-xl px-4 py-3 text-sm outline-none transition-all font-medium"
+                    placeholder=" " 
+                    className="peer w-full bg-zinc-50 border border-zinc-200 focus:border-violet-500 focus:bg-white text-zinc-900 dark:bg-zinc-950 dark:border-zinc-800 dark:focus:bg-zinc-950 dark:text-zinc-200 rounded-xl px-4 pt-5 pb-2 text-sm outline-none transition-all font-medium placeholder-transparent"
                   />
+                  <label htmlFor="name" className="absolute left-4 top-1.5 text-[10px] font-bold text-zinc-500 dark:text-zinc-405 uppercase tracking-wider transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-zinc-400 dark:peer-placeholder-shown:text-zinc-600 peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:text-violet-500 pointer-events-none">
+                    Your Name
+                  </label>
                 </div>
-                <div className="flex flex-col gap-1.5">
-                  <label htmlFor="email" className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Email Address</label>
+                <div className="relative">
                   <input 
                     type="email" 
                     id="email" 
                     name="email"
                     required 
-                    placeholder="jane@company.com" 
-                    className="w-full bg-zinc-50 border border-zinc-200 focus:border-violet-500 focus:bg-white text-zinc-900 dark:bg-zinc-950 dark:border-zinc-800 dark:focus:bg-zinc-950 dark:text-zinc-200 rounded-xl px-4 py-3 text-sm outline-none transition-all font-medium"
+                    placeholder=" " 
+                    className="peer w-full bg-zinc-50 border border-zinc-200 focus:border-violet-500 focus:bg-white text-zinc-900 dark:bg-zinc-950 dark:border-zinc-800 dark:focus:bg-zinc-950 dark:text-zinc-200 rounded-xl px-4 pt-5 pb-2 text-sm outline-none transition-all font-medium placeholder-transparent"
                   />
+                  <label htmlFor="email" className="absolute left-4 top-1.5 text-[10px] font-bold text-zinc-500 dark:text-zinc-405 uppercase tracking-wider transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-zinc-400 dark:peer-placeholder-shown:text-zinc-600 peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:text-violet-500 pointer-events-none">
+                    Email Address
+                  </label>
                 </div>
-                <div className="flex flex-col gap-1.5">
-                  <div className="flex justify-between items-center">
-                    <label htmlFor="message" className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Brief Message</label>
-                    <span className="text-[10px] font-bold text-zinc-450 dark:text-zinc-550">{messageLength}/500</span>
-                  </div>
+                <div className="relative">
                   <textarea 
                     id="message" 
                     name="message"
@@ -789,15 +822,26 @@ export default function Home() {
                     required 
                     maxLength={500}
                     onChange={(e) => setMessageLength(e.target.value.length)}
-                    placeholder="Describe your project, timeline, and expectations..." 
-                    className="w-full bg-zinc-50 border border-zinc-200 focus:border-violet-500 focus:bg-white text-zinc-900 dark:bg-zinc-950 dark:border-zinc-800 dark:focus:bg-zinc-950 dark:text-zinc-200 rounded-xl px-4 py-3 text-sm outline-none transition-all resize-none font-medium"
+                    placeholder=" " 
+                    className="peer w-full bg-zinc-50 border border-zinc-200 focus:border-violet-500 focus:bg-white text-zinc-900 dark:bg-zinc-950 dark:border-zinc-800 dark:focus:bg-zinc-950 dark:text-zinc-200 rounded-xl px-4 pt-6 pb-2.5 text-sm outline-none transition-all resize-none font-medium placeholder-transparent"
                   />
+                  <label htmlFor="message" className="absolute left-4 top-1.5 text-[10px] font-bold text-zinc-500 dark:text-zinc-405 uppercase tracking-wider transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-zinc-400 dark:peer-placeholder-shown:text-zinc-600 peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:text-violet-500 pointer-events-none">
+                    Brief Message
+                  </label>
+                  <span className={`absolute right-4 bottom-2 text-[9px] font-bold transition-all duration-200 ${
+                    messageLength > 450 ? 'text-rose-500 scale-110 font-black' : 'text-zinc-400 dark:text-zinc-600 peer-focus:text-violet-500'
+                  }`}>
+                    {messageLength}/500
+                  </span>
                 </div>
                 <button 
                   type="submit"
-                  className="w-full bg-violet-600 hover:bg-violet-500 text-white font-bold py-3.5 rounded-xl transition-all active:scale-[0.98] text-sm mt-2 shadow-md hover:shadow-lg cursor-pointer"
+                  className="group w-full bg-violet-600 hover:bg-violet-500 text-white font-bold py-3.5 rounded-xl transition-all active:scale-[0.98] text-sm mt-2 shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2"
                 >
                   Send Message
+                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
                 </button>
                 <p className="text-[10px] text-center font-bold text-zinc-400 dark:text-zinc-550 tracking-wide mt-1">
                   💡 Submitting will immediately open WhatsApp chat & compose a pre-filled email.
