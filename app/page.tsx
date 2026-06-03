@@ -268,7 +268,7 @@ export default function Home() {
       <section id="home" className="relative min-h-[90vh] flex flex-col justify-center items-center py-20 px-6 md:px-0">
         <div className="relative z-10 max-w-4xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left Column: Text Content */}
-          <div className="flex flex-col items-start text-left gap-5 order-2 md:order-1">
+          <div className="flex flex-col items-start text-left gap-5 order-2 md:order-1 animate-slide-in-bottom">
             {/* Top tags */}
             <div className="flex flex-wrap gap-2">
               <span className="px-3 py-1 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/40 dark:border-zinc-800/40 rounded-full text-[11px] font-semibold text-zinc-800 dark:text-zinc-200">
@@ -328,7 +328,7 @@ export default function Home() {
           </div>
 
           {/* Right Column: Professional Profile Image with Two Floating Text Cards */}
-          <div className="relative flex justify-center items-center order-1 md:order-2 w-full">
+          <div className="relative flex justify-center items-center order-1 md:order-2 w-full animate-slide-in-bottom animation-delay-150">
 
             {/* Premium Rounded Vertical Frame */}
             <div className="relative w-full max-w-[310px] aspect-[3/4] p-3.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/80 rounded-[44px] shadow-2xl dark:shadow-zinc-950/40 hover:scale-[1.01] transition-transform duration-500">
