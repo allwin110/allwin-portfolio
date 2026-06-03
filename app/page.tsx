@@ -84,6 +84,7 @@ export default function Home() {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [contactSubmitted, setContactSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [messageLength, setMessageLength] = useState(0);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -742,7 +743,7 @@ export default function Home() {
             <div className="flex gap-4">
               <a href="https://linkedin.com/in/allwin" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors text-xs font-bold uppercase tracking-wider">LinkedIn</a>
               <span className="text-zinc-300 dark:text-zinc-800">/</span>
-              <a href="https://behance.net/allwin" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors text-xs font-bold uppercase tracking-wider">Behance</a>
+              <a href="https://www.behance.net/allwinalex" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors text-xs font-bold uppercase tracking-wider">Behance</a>
             </div>
           </div>
 
@@ -764,29 +765,43 @@ export default function Home() {
               </div>
             ) : (
               <form 
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
+                  setIsSubmitting(true);
                   const target = e.currentTarget;
                   const name = (target.elements.namedItem('name') as HTMLInputElement).value;
                   const email = (target.elements.namedItem('email') as HTMLInputElement).value;
                   const message = (target.elements.namedItem('message') as HTMLTextAreaElement).value;
 
-                  // 1. WhatsApp URL construction (Indian dialing format: 919677193923)
-                  const whatsappText = `*New Portfolio Inquiry*\n\n*Name:* ${name}\n*Email:* ${email}\n\n*Message:*\n${message}`;
-                  const whatsappUrl = `https://api.whatsapp.com/send?phone=919677193923&text=${encodeURIComponent(whatsappText)}`;
+                  try {
+                    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "290e762f-9d0a-4416-a1b8-e78f62cbc862";
+                    const response = await fetch("https://api.web3forms.com/submit", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json"
+                      },
+                      body: JSON.stringify({
+                        access_key: accessKey,
+                        name: name,
+                        email: email,
+                        message: message,
+                        subject: `New Portfolio Inquiry from ${name}`
+                      })
+                    });
 
-                  // 2. Email Mailto URL construction
-                  const emailSubject = `Portfolio Inquiry from ${name}`;
-                  const emailBody = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
-                  const mailtoUrl = `mailto:allwin110@live.in?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-
-                  // Route both channels cleanly
-                  window.location.href = mailtoUrl;
-                  setTimeout(() => {
-                    window.open(whatsappUrl, '_blank');
-                  }, 400);
-
-                  setContactSubmitted(true);
+                    const result = await response.json();
+                    if (result.success) {
+                      setContactSubmitted(true);
+                    } else {
+                      alert("Submission failed. Please try again or email me directly at allwin110@live.in");
+                    }
+                  } catch (err) {
+                    console.error("Submission error:", err);
+                    alert("A network error occurred. Please try again or email me directly at allwin110@live.in");
+                  } finally {
+                    setIsSubmitting(false);
+                  }
                 }}
                 className="flex flex-col gap-5"
               >
@@ -838,15 +853,28 @@ export default function Home() {
                 </div>
                 <button 
                   type="submit"
-                  className="group w-full bg-violet-600 hover:bg-violet-500 text-white font-bold py-3.5 rounded-xl transition-all active:scale-[0.98] text-sm mt-2 shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2"
+                  disabled={isSubmitting}
+                  className="group w-full bg-violet-600 hover:bg-violet-500 text-white font-bold py-3.5 rounded-xl transition-all active:scale-[0.98] text-sm mt-2 shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  Send Message
-                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
+                  {isSubmitting ? (
+                    <>
+                      Sending Message...
+                      <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                      </svg>
+                    </>
+                  ) : (
+                    <>
+                      Send Message
+                      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </>
+                  )}
                 </button>
                 <p className="text-[10px] text-center font-bold text-zinc-400 dark:text-zinc-550 tracking-wide mt-1">
-                  💡 Submitting will immediately open WhatsApp chat & compose a pre-filled email.
+                  💡 Messages are delivered directly and securely to my inbox via Web3Forms.
                 </p>
               </form>
             )}

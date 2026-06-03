@@ -35,7 +35,7 @@ export const projectsData: Project[] = [
       "Solution & Pipeline Catalogue"
     ],
     tags: ["Enterprise UX", "Figma", "SaaS Console", "WCAG AA", "React-aware Prototyping"],
-    demoUrl: "https://behance.net/allwin",
+    demoUrl: "https://www.behance.net/allwinalex",
     githubUrl: "https://linkedin.com/in/allwin"
   },
   {
@@ -61,7 +61,7 @@ export const projectsData: Project[] = [
       "AI Onboarding Assistant"
     ],
     tags: ["AI HR Workflows", "Workflow Automation", "Dashboard Design", "Systems Thinking"],
-    demoUrl: "https://behance.net/allwin",
+    demoUrl: "https://www.behance.net/allwinalex",
     githubUrl: "https://linkedin.com/in/allwin"
   },
   {
@@ -87,7 +87,7 @@ export const projectsData: Project[] = [
       "Workloads View"
     ],
     tags: ["Carbon Design System", "Platform Migration", "Cross-Platform UX", "SaaS Modernization"],
-    demoUrl: "https://behance.net/allwin",
+    demoUrl: "https://www.behance.net/allwinalex",
     githubUrl: "https://linkedin.com/in/allwin"
   },
   {
@@ -113,7 +113,7 @@ export const projectsData: Project[] = [
       "Observability & Monitoring View"
     ],
     tags: ["Kubernetes UX", "GPU Workloads", "Information Architecture", "AI Orchestration"],
-    demoUrl: "https://behance.net/allwin",
+    demoUrl: "https://www.behance.net/allwinalex",
     githubUrl: "https://linkedin.com/in/allwin"
   }
 ];
