@@ -83,9 +83,6 @@ export default function Home() {
   const [selectedProject, setSelectedProject] = useState<typeof projectsData[0] | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [contactSubmitted, setContactSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [messageLength, setMessageLength] = useState(0);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -706,180 +703,49 @@ export default function Home() {
 
       {/* Contact Section */}
       <section id="contact" className="max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto py-24 px-6 md:px-8 lg:px-12 2xl:px-0 border-t border-zinc-200 dark:border-zinc-900">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="max-w-3xl mx-auto flex flex-col gap-10 animate-slide-in-bottom">
           
           {/* Info Details */}
-          <div className="flex flex-col justify-between gap-8">
-            <div className="flex flex-col gap-4">
-              <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Get in Touch</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-955 dark:text-white">Let's craft something remarkable together.</h2>
-              <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed mt-2 font-medium">
-                Have an enterprise product that requires a clear, functional interface architecture, data-heavy dashboard configurations, or a robust WCAG accessibility audit? Feel free to reach out.
-              </p>
-            </div>
+          <div className="flex flex-col gap-4 text-center md:text-left">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Get in Touch</span>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-955 dark:text-white">Let's craft something remarkable together.</h2>
+            <p className="text-zinc-600 dark:text-zinc-400 text-sm md:text-base leading-relaxed mt-2 font-medium">
+              Have an enterprise product that requires a clear, functional interface architecture, data-heavy dashboard configurations, or a robust WCAG accessibility audit? Feel free to reach out.
+            </p>
+          </div>
 
-            <div className="flex flex-col gap-4 text-sm font-semibold">
-              <a href="mailto:allwin110@live.in" className="inline-flex items-center gap-3 text-zinc-600 dark:text-zinc-400 hover:text-zinc-955 dark:hover:text-white transition-colors">
-                <svg className="w-5 h-5 text-violet-600 dark:text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                allwin110@live.in
-              </a>
-              <a href="tel:+919677193923" className="inline-flex items-center gap-3 text-zinc-600 dark:text-zinc-400 hover:text-zinc-955 dark:hover:text-white transition-colors">
-                <svg className="w-5 h-5 text-cyan-600 dark:text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                +91 9677193923
-              </a>
-              <span className="inline-flex items-center gap-3 text-zinc-600 dark:text-zinc-400">
-                <svg className="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                Chennai, Tamil Nadu, India
-              </span>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-sm font-semibold">
+            <a href="mailto:allwin110@live.in" className="flex flex-col gap-2 p-5 bg-white dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800/60 rounded-2xl hover:border-violet-500/50 hover:shadow-lg dark:hover:shadow-violet-500/5 transition-all duration-300">
+              <svg className="w-5 h-5 text-violet-600 dark:text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mt-2">Email Address</span>
+              <span className="text-zinc-800 dark:text-zinc-200 text-xs md:text-sm truncate">allwin110@live.in</span>
+            </a>
 
-            <div className="flex gap-4">
-              <a href="https://linkedin.com/in/allwin" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors text-xs font-bold uppercase tracking-wider">LinkedIn</a>
-              <span className="text-zinc-300 dark:text-zinc-800">/</span>
-              <a href="https://www.behance.net/allwinalex" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors text-xs font-bold uppercase tracking-wider">Behance</a>
+            <a href="tel:+919677193923" className="flex flex-col gap-2 p-5 bg-white dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800/60 rounded-2xl hover:border-cyan-500/50 hover:shadow-lg dark:hover:shadow-cyan-500/5 transition-all duration-300">
+              <svg className="w-5 h-5 text-cyan-600 dark:text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+              <span className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mt-2">Phone Number</span>
+              <span className="text-zinc-800 dark:text-zinc-200 text-xs md:text-sm">+91 9677193923</span>
+            </a>
+
+            <div className="flex flex-col gap-2 p-5 bg-white dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800/60 rounded-2xl">
+              <svg className="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mt-2">Location</span>
+              <span className="text-zinc-800 dark:text-zinc-200 text-xs md:text-sm">Chennai, TN, India</span>
             </div>
           </div>
 
-          {/* Premium Form */}
-          <div className="bg-white border border-zinc-200/80 dark:bg-zinc-900/40 dark:border-zinc-800/40 p-8 rounded-3xl shadow-lg dark:shadow-2xl">
-            {contactSubmitted ? (
-              <div className="flex flex-col items-center justify-center text-center py-12 gap-4 animate-fade-in">
-                <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-950/40 border border-emerald-400/40 rounded-full flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-xl font-bold">✓</div>
-                <div>
-                  <h3 className="text-xl font-bold text-zinc-955 dark:text-white">Message Sent!</h3>
-                  <p className="text-zinc-550 dark:text-zinc-400 text-xs mt-1.5 leading-relaxed font-medium">Thank you for reaching out. I'll get back to your email within 24 hours.</p>
-                </div>
-                <button 
-                  onClick={() => setContactSubmitted(false)}
-                  className="mt-4 px-5 py-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-xs font-bold rounded-lg transition-colors cursor-pointer"
-                >
-                  Send another message
-                </button>
-              </div>
-            ) : (
-              <form 
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  setIsSubmitting(true);
-                  const target = e.currentTarget;
-                  const name = (target.elements.namedItem('name') as HTMLInputElement).value;
-                  const email = (target.elements.namedItem('email') as HTMLInputElement).value;
-                  const message = (target.elements.namedItem('message') as HTMLTextAreaElement).value;
-
-                  try {
-                    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "290e762f-9d0a-4416-a1b8-e78f62cbc862";
-                    const response = await fetch("https://api.web3forms.com/submit", {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                        Accept: "application/json"
-                      },
-                      body: JSON.stringify({
-                        access_key: accessKey,
-                        name: name,
-                        email: email,
-                        message: message,
-                        subject: `New Portfolio Inquiry from ${name}`
-                      })
-                    });
-
-                    const result = await response.json();
-                    if (result.success) {
-                      setContactSubmitted(true);
-                    } else {
-                      alert("Submission failed. Please try again or email me directly at allwin110@live.in");
-                    }
-                  } catch (err) {
-                    console.error("Submission error:", err);
-                    alert("A network error occurred. Please try again or email me directly at allwin110@live.in");
-                  } finally {
-                    setIsSubmitting(false);
-                  }
-                }}
-                className="flex flex-col gap-5"
-              >
-                <div className="relative">
-                  <input 
-                    type="text" 
-                    id="name" 
-                    name="name"
-                    required 
-                    placeholder=" " 
-                    className="peer w-full bg-zinc-50 border border-zinc-200 focus:border-violet-500 focus:bg-white text-zinc-900 dark:bg-zinc-950 dark:border-zinc-800 dark:focus:bg-zinc-950 dark:text-zinc-200 rounded-xl px-4 pt-5 pb-2 text-sm outline-none transition-all font-medium placeholder-transparent"
-                  />
-                  <label htmlFor="name" className="absolute left-4 top-1.5 text-[10px] font-bold text-zinc-500 dark:text-zinc-405 uppercase tracking-wider transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-zinc-400 dark:peer-placeholder-shown:text-zinc-600 peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:text-violet-500 pointer-events-none">
-                    Your Name
-                  </label>
-                </div>
-                <div className="relative">
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="email"
-                    required 
-                    placeholder=" " 
-                    className="peer w-full bg-zinc-50 border border-zinc-200 focus:border-violet-500 focus:bg-white text-zinc-900 dark:bg-zinc-950 dark:border-zinc-800 dark:focus:bg-zinc-950 dark:text-zinc-200 rounded-xl px-4 pt-5 pb-2 text-sm outline-none transition-all font-medium placeholder-transparent"
-                  />
-                  <label htmlFor="email" className="absolute left-4 top-1.5 text-[10px] font-bold text-zinc-500 dark:text-zinc-405 uppercase tracking-wider transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-zinc-400 dark:peer-placeholder-shown:text-zinc-600 peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:text-violet-500 pointer-events-none">
-                    Email Address
-                  </label>
-                </div>
-                <div className="relative">
-                  <textarea 
-                    id="message" 
-                    name="message"
-                    rows={4} 
-                    required 
-                    maxLength={500}
-                    onChange={(e) => setMessageLength(e.target.value.length)}
-                    placeholder=" " 
-                    className="peer w-full bg-zinc-50 border border-zinc-200 focus:border-violet-500 focus:bg-white text-zinc-900 dark:bg-zinc-950 dark:border-zinc-800 dark:focus:bg-zinc-950 dark:text-zinc-200 rounded-xl px-4 pt-6 pb-2.5 text-sm outline-none transition-all resize-none font-medium placeholder-transparent"
-                  />
-                  <label htmlFor="message" className="absolute left-4 top-1.5 text-[10px] font-bold text-zinc-500 dark:text-zinc-405 uppercase tracking-wider transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-zinc-400 dark:peer-placeholder-shown:text-zinc-600 peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:text-violet-500 pointer-events-none">
-                    Brief Message
-                  </label>
-                  <span className={`absolute right-4 bottom-2 text-[9px] font-bold transition-all duration-200 ${
-                    messageLength > 450 ? 'text-rose-500 scale-110 font-black' : 'text-zinc-400 dark:text-zinc-600 peer-focus:text-violet-500'
-                  }`}>
-                    {messageLength}/500
-                  </span>
-                </div>
-                <button 
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="group w-full bg-violet-600 hover:bg-violet-500 text-white font-bold py-3.5 rounded-xl transition-all active:scale-[0.98] text-sm mt-2 shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? (
-                    <>
-                      Sending Message...
-                      <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                      </svg>
-                    </>
-                  ) : (
-                    <>
-                      Send Message
-                      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                      </svg>
-                    </>
-                  )}
-                </button>
-                <p className="text-[10px] text-center font-bold text-zinc-400 dark:text-zinc-550 tracking-wide mt-1">
-                  💡 Messages are delivered directly and securely to my inbox via Web3Forms.
-                </p>
-              </form>
-            )}
+          <div className="flex flex-wrap gap-4 items-center justify-center md:justify-start">
+            <span className="text-xs text-zinc-400 dark:text-zinc-555 font-bold uppercase tracking-wider">Professional Networks:</span>
+            <a href="https://linkedin.com/in/allwin" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-xl text-zinc-650 dark:text-zinc-300 hover:text-zinc-955 dark:hover:text-white transition-all text-xs font-bold uppercase tracking-wider">LinkedIn</a>
+            <a href="https://www.behance.net/allwinalex" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-xl text-zinc-650 dark:text-zinc-300 hover:text-zinc-955 dark:hover:text-white transition-all text-xs font-bold uppercase tracking-wider">Behance</a>
           </div>
-
         </div>
       </section>
 
