@@ -86,6 +86,7 @@ export default function Home() {
   const [contactSubmitted, setContactSubmitted] = useState(false);
   const [messageLength, setMessageLength] = useState(0);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const [mounted, setMounted] = useState(false);
   
   // Profile picture rotation parameters
@@ -104,13 +105,14 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
-  // Monitor scroll for visual border-progress effect
+  // Monitor scroll for visual border-progress effect and scroll-to-top FAB visibility
   useEffect(() => {
     const handleScroll = () => {
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
       if (totalScroll > 0) {
         setScrollProgress((window.scrollY / totalScroll) * 100);
       }
+      setShowScrollTop(window.scrollY > 300);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -166,7 +168,7 @@ export default function Home() {
 
       {/* Floating Header */}
       <header className="sticky top-4 z-40 w-full px-4 md:px-0">
-        <nav className="max-w-4xl mx-auto bg-white/80 dark:bg-zinc-900/70 backdrop-blur-md border border-zinc-200/50 dark:border-zinc-800/40 rounded-full py-3 px-6 shadow-xl flex items-center justify-between transition-all duration-300">
+        <nav className="max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto bg-white/80 dark:bg-zinc-900/70 backdrop-blur-md border border-zinc-200/50 dark:border-zinc-800/40 rounded-full py-3 px-6 shadow-xl flex items-center justify-between transition-all duration-300">
           <a href="#home" className="text-xl font-bold tracking-tight bg-gradient-to-r from-violet-600 to-cyan-500 dark:from-violet-400 dark:to-cyan-400 bg-clip-text text-transparent hover:opacity-90 transition-opacity">
             ALLWIN ALEX.
           </a>
@@ -265,8 +267,8 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section id="home" className="relative min-h-[90vh] flex flex-col justify-center items-center py-20 px-6 md:px-0">
-        <div className="relative z-10 max-w-4xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <section id="home" className="relative min-h-[90vh] flex flex-col justify-center items-center py-20 px-6 md:px-8 lg:px-12 2xl:px-0">
+        <div className="relative z-10 max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left Column: Text Content */}
           <div className="flex flex-col items-start text-left gap-5 order-2 md:order-1 animate-slide-in-bottom">
             {/* Top tags */}
@@ -287,11 +289,11 @@ export default function Home() {
               ENTERPRISE UX • AI WORKFLOWS • SYSTEMS THINKING
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-zinc-900 dark:text-white">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-black tracking-tight leading-[1.1] text-zinc-900 dark:text-white">
               Designing scalable enterprise experiences for AI-native products.
             </h1>
 
-            <p className="text-base md:text-lg text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-lg">
+            <p className="text-base md:text-lg text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-lg lg:max-w-xl xl:max-w-2xl">
               Senior UX designer focused on enterprise systems, operational workflows, AI-assisted product experiences, and scalable design intelligence.
             </p>
 
@@ -311,7 +313,7 @@ export default function Home() {
             </div>
 
             {/* Bottom Stats Metrics */}
-            <div className="grid grid-cols-3 gap-6 pt-6 border-t border-zinc-200/80 dark:border-zinc-800/60 w-full max-w-lg mt-2">
+            <div className="grid grid-cols-3 gap-6 pt-6 border-t border-zinc-200/80 dark:border-zinc-800/60 w-full max-w-lg lg:max-w-xl xl:max-w-2xl mt-2">
               <div>
                 <span className="text-3xl md:text-4xl font-black text-zinc-900 dark:text-white block"><AnimatedCounter target={9} suffix="+" /></span>
                 <span className="text-[10px] md:text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block mt-1">Years Experience</span>
@@ -331,7 +333,7 @@ export default function Home() {
           <div className="relative flex justify-center items-center order-1 md:order-2 w-full animate-slide-in-bottom animation-delay-150">
 
             {/* Premium Rounded Vertical Frame */}
-            <div className="relative w-full max-w-[310px] aspect-[3/4] p-3.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/80 rounded-[44px] shadow-2xl dark:shadow-zinc-950/40 hover:scale-[1.01] transition-transform duration-500">
+            <div className="relative w-full max-w-[310px] lg:max-w-[360px] xl:max-w-[420px] 2xl:max-w-[460px] aspect-[3/4] p-3.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/80 rounded-[44px] shadow-2xl dark:shadow-zinc-950/40 hover:scale-[1.01] transition-transform duration-500">
               <div className="relative w-full h-full rounded-[30px] overflow-hidden bg-zinc-50 dark:bg-zinc-800">
                 {profiles.map((src, idx) => (
                   <div
@@ -345,7 +347,7 @@ export default function Home() {
                       alt={`Allwin Alex - Senior UX Designer ${idx + 1}`}
                       fill
                       priority={idx === 0}
-                      sizes="310px"
+                      sizes="(max-width: 768px) 310px, (max-width: 1024px) 360px, (max-width: 1280px) 420px, 460px"
                       className="object-cover object-top"
                     />
                   </div>
@@ -353,7 +355,7 @@ export default function Home() {
               </div>
 
               {/* Floating Badge 1 (Top Left — overlapping card) */}
-              <div className="absolute -top-4 -left-8 z-20 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 p-3 rounded-2xl shadow-lg max-w-[180px] select-none animate-float-1 text-left">
+              <div className="absolute -top-4 -left-4 sm:-left-8 lg:-left-12 xl:-left-16 z-20 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 p-3 rounded-2xl shadow-lg max-w-[180px] lg:max-w-[200px] xl:max-w-[220px] select-none animate-float-1 text-left">
                 <span className="text-[8px] font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-widest block mb-1">AI WORKFLOW</span>
                 <span className="text-[11px] font-bold text-zinc-800 dark:text-zinc-100 leading-tight block">
                   Enterprise orchestration systems
@@ -361,7 +363,7 @@ export default function Home() {
               </div>
 
               {/* Floating Badge 2 (Bottom Right — overlapping card) */}
-              <div className="absolute -bottom-4 -right-8 z-20 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 p-3 rounded-2xl shadow-lg max-w-[180px] select-none animate-float-2 text-left">
+              <div className="absolute -bottom-4 -right-4 sm:-right-8 lg:-right-12 xl:-right-16 z-20 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 p-3 rounded-2xl shadow-lg max-w-[180px] lg:max-w-[200px] xl:max-w-[220px] select-none animate-float-2 text-left">
                 <span className="text-[8px] font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-widest block mb-1">PLATFORM THINKING</span>
                 <span className="text-[11px] font-bold text-zinc-800 dark:text-zinc-100 leading-tight block">
                   Operational UX at scale
@@ -373,7 +375,7 @@ export default function Home() {
       </section>
 
       {/* About Bento Grid Section */}
-      <section id="about" className="max-w-4xl mx-auto py-24 px-6 md:px-0 border-t border-zinc-200 dark:border-zinc-900">
+      <section id="about" className="max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto py-24 px-6 md:px-8 lg:px-12 2xl:px-0 border-t border-zinc-200 dark:border-zinc-900">
         <div className="flex flex-col gap-4 mb-12">
           <span className="text-xs font-bold uppercase tracking-widest text-violet-600 dark:text-violet-400">About Me</span>
           <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-955 dark:text-white">The SaaS & Infra Specialist</h2>
@@ -461,7 +463,7 @@ export default function Home() {
       </section>
 
       {/* Projects Portfolio Section */}
-      <section id="projects" className="max-w-4xl mx-auto py-24 px-6 md:px-0 border-t border-zinc-200 dark:border-zinc-900">
+      <section id="projects" className="max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto py-24 px-6 md:px-8 lg:px-12 2xl:px-0 border-t border-zinc-200 dark:border-zinc-900">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
           <div className="flex flex-col gap-4">
             <span className="text-xs font-bold uppercase tracking-widest text-cyan-600 dark:text-cyan-400">Portfolio</span>
@@ -538,7 +540,7 @@ export default function Home() {
       {selectedProject && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-zinc-950/80 dark:bg-zinc-950/90 backdrop-blur-md animate-fade-in" onClick={() => setSelectedProject(null)}>
           <div 
-            className="relative w-full max-w-4xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] animate-zoom-in"
+            className="relative w-full max-w-4xl lg:max-w-5xl xl:max-w-6xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] animate-zoom-in"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header Frame */}
@@ -666,7 +668,7 @@ export default function Home() {
       )}
 
       {/* Experience Timeline Section */}
-      <section id="experience" className="max-w-4xl mx-auto py-24 px-6 md:px-0 border-t border-zinc-200 dark:border-zinc-900">
+      <section id="experience" className="max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto py-24 px-6 md:px-8 lg:px-12 2xl:px-0 border-t border-zinc-200 dark:border-zinc-900">
         <div className="flex flex-col gap-4 mb-12">
           <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Career Timeline</span>
           <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-955 dark:text-white">Professional Experience</h2>
@@ -702,7 +704,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="max-w-4xl mx-auto py-24 px-6 md:px-0 border-t border-zinc-200 dark:border-zinc-900">
+      <section id="contact" className="max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto py-24 px-6 md:px-8 lg:px-12 2xl:px-0 border-t border-zinc-200 dark:border-zinc-900">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           
           {/* Info Details */}
@@ -854,7 +856,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="max-w-4xl mx-auto py-12 px-6 md:px-0 border-t border-zinc-200 dark:border-zinc-900 text-center flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-zinc-500 font-semibold transition-colors duration-400">
+      <footer className="max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto py-12 px-6 md:px-8 lg:px-12 2xl:px-0 border-t border-zinc-200 dark:border-zinc-900 text-center flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-zinc-500 font-semibold transition-colors duration-400">
         <div>
           &copy; {new Date().getFullYear()} Allwin Alex. Designed with precision, coded for performance.
         </div>
@@ -866,6 +868,19 @@ export default function Home() {
           <span>Tailwind CSS v4</span>
         </div>
       </footer>
+
+      {/* Scroll to Top FAB */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className={`fixed bottom-6 right-6 z-50 p-3.5 bg-violet-600 hover:bg-violet-750 dark:bg-violet-600 dark:hover:bg-violet-550 text-white rounded-full shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer flex items-center justify-center ${
+          showScrollTop ? 'opacity-100 translate-y-0 visible' : 'opacity-0 translate-y-4 invisible pointer-events-none'
+        }`}
+        aria-label="Scroll to top"
+      >
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
+        </svg>
+      </button>
     </div>
   );
 }
