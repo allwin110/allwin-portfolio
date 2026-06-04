@@ -86,6 +86,33 @@ export default function Home() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  // States for protecting contact details
+  const [emailRevealed, setEmailRevealed] = useState(false);
+  const [phoneRevealed, setPhoneRevealed] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
+  const [phoneCopied, setPhoneCopied] = useState(false);
+
+  // Clipboard copy handlers
+  const handleCopyEmail = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const emailParts = ["allwin110", "live.in"];
+    const fullEmail = emailParts.join("@");
+    navigator.clipboard.writeText(fullEmail);
+    setEmailCopied(true);
+    setTimeout(() => setEmailCopied(false), 2000);
+  };
+
+  const handleCopyPhone = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const phoneParts = ["+91", "9677193923"];
+    const fullPhone = phoneParts.join("");
+    navigator.clipboard.writeText(fullPhone);
+    setPhoneCopied(true);
+    setTimeout(() => setPhoneCopied(false), 2000);
+  };
   
   // Profile picture rotation parameters
   const [profileIndex, setProfileIndex] = useState(0);
@@ -303,7 +330,8 @@ export default function Home() {
                 View Case Studies <span className="text-xs group-hover:translate-x-1 transition-transform duration-300">→</span>
               </a>
               <a 
-                href="#contact" 
+                href="/Allwin_Alex_Resume.pdf"
+                download="Allwin_Alex_Resume.pdf"
                 className="group inline-flex items-center justify-center px-6 py-3.5 bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-200 font-bold rounded-full transition-all text-sm gap-2 shadow-sm cursor-pointer active:scale-[0.98]"
               >
                 Resume <span className="text-xs group-hover:translate-y-0.5 transition-transform duration-300">↓</span>
@@ -714,37 +742,98 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-sm font-semibold">
-            <a href="mailto:allwin110@live.in" className="flex flex-col gap-2 p-5 bg-white dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800/60 rounded-2xl hover:border-violet-500/50 hover:shadow-lg dark:hover:shadow-violet-500/5 transition-all duration-300">
-              <svg className="w-5 h-5 text-violet-600 dark:text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              <span className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mt-2">Email Address</span>
-              <span className="text-zinc-800 dark:text-zinc-200 text-xs md:text-sm truncate">allwin110@live.in</span>
-            </a>
 
-            <a href="tel:+919677193923" className="flex flex-col gap-2 p-5 bg-white dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800/60 rounded-2xl hover:border-cyan-500/50 hover:shadow-lg dark:hover:shadow-cyan-500/5 transition-all duration-300">
-              <svg className="w-5 h-5 text-cyan-600 dark:text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-              <span className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mt-2">Phone Number</span>
-              <span className="text-zinc-800 dark:text-zinc-200 text-xs md:text-sm">+91 9677193923</span>
-            </a>
 
-            <div className="flex flex-col gap-2 p-5 bg-white dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800/60 rounded-2xl">
-              <svg className="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mt-2">Location</span>
-              <span className="text-zinc-800 dark:text-zinc-200 text-xs md:text-sm">Chennai, TN, India</span>
+          {/* Professional Networks & Socials Redesign */}
+          <div className="flex flex-col gap-6 border-t border-zinc-200 dark:border-zinc-850 pt-10 mt-2">
+            <div className="flex flex-col gap-1 text-center md:text-left">
+              <span className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">Connect Globally</span>
+              <h3 className="text-xl font-extrabold text-zinc-955 dark:text-white">Professional Networks & Social Profiles</h3>
             </div>
-          </div>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+              {/* LinkedIn */}
+              <a 
+                href="https://www.linkedin.com/in/allwin-alex91/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="group flex flex-col items-center justify-center p-5 bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/60 rounded-2xl hover:border-blue-500 hover:shadow-lg dark:hover:shadow-blue-500/5 transition-all duration-300 text-center gap-3 cursor-pointer"
+              >
+                <svg className="w-6 h-6 text-zinc-400 group-hover:text-blue-500 dark:text-zinc-500 dark:group-hover:text-blue-400 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                </svg>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-xs font-bold text-zinc-850 dark:text-zinc-200">LinkedIn</span>
+                  <span className="text-[9px] text-zinc-450 dark:text-zinc-500 font-semibold group-hover:text-blue-500/70 transition-colors">Professional Profile</span>
+                </div>
+              </a>
 
-          <div className="flex flex-wrap gap-4 items-center justify-center md:justify-start">
-            <span className="text-xs text-zinc-400 dark:text-zinc-555 font-bold uppercase tracking-wider">Professional Networks:</span>
-            <a href="https://linkedin.com/in/allwin" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-xl text-zinc-650 dark:text-zinc-300 hover:text-zinc-955 dark:hover:text-white transition-all text-xs font-bold uppercase tracking-wider">LinkedIn</a>
-            <a href="https://www.behance.net/allwinalex" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-xl text-zinc-650 dark:text-zinc-300 hover:text-zinc-955 dark:hover:text-white transition-all text-xs font-bold uppercase tracking-wider">Behance</a>
+              {/* Behance */}
+              <a 
+                href="https://www.behance.net/allwinalex" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="group flex flex-col items-center justify-center p-5 bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/60 rounded-2xl hover:border-blue-600 hover:shadow-lg dark:hover:shadow-blue-600/5 transition-all duration-300 text-center gap-3 cursor-pointer"
+              >
+                <svg className="w-6 h-6 text-zinc-400 group-hover:text-blue-600 dark:text-zinc-500 dark:group-hover:text-blue-500 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M22 13.555h-4.321c.074.886.756 1.492 1.83 1.492 1.055 0 1.637-.478 1.815-.99h1.796c-.347 1.576-1.895 2.698-3.642 2.698-2.613 0-4.048-1.785-4.048-4.148 0-2.484 1.562-4.167 3.901-4.167 2.378 0 3.791 1.635 3.669 4.148zM20.102 12.164c-.046-.867-.655-1.378-1.574-1.378-1.01 0-1.634.549-1.77 1.378h3.344zM11.021 10.135h-3.418v1.78h3.181c.883 0 1.401-.334 1.401-.902s-.518-.878-1.164-.878zm-3.418 3.513v2.091h3.486c.928 0 1.503-.393 1.503-1.025 0-.663-.615-1.066-1.574-1.066h-3.415zm9.467-5.068h3.93v1.17h-3.93v-1.17zm-6.049.52c0-1.365-1.002-2.1-2.909-2.1h-5.02v10.9h5.197c1.986 0 3.197-.847 3.197-2.31 0-1.144-.691-1.787-1.758-2.046 1.007-.272 1.293-.976 1.293-2.444z"/>
+                </svg>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-xs font-bold text-zinc-850 dark:text-zinc-200">Behance</span>
+                  <span className="text-[9px] text-zinc-450 dark:text-zinc-500 font-semibold group-hover:text-blue-600/70 transition-colors">Design Portfolio</span>
+                </div>
+              </a>
+
+              {/* Naukri */}
+              <a 
+                href="https://www.naukri.com/mnjuser/profile" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="group flex flex-col items-center justify-center p-5 bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/60 rounded-2xl hover:border-emerald-500 hover:shadow-lg dark:hover:shadow-emerald-500/5 transition-all duration-300 text-center gap-3 cursor-pointer"
+              >
+                <svg className="w-6 h-6 text-zinc-400 group-hover:text-emerald-500 dark:text-zinc-500 dark:group-hover:text-emerald-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-xs font-bold text-zinc-850 dark:text-zinc-200">Naukri</span>
+                  <span className="text-[9px] text-zinc-450 dark:text-zinc-500 font-semibold group-hover:text-emerald-500/70 transition-colors">National CV</span>
+                </div>
+              </a>
+
+              {/* Gulf Naukri */}
+              <a 
+                href="https://www.naukrigulf.com/mnj/userProfile/myCV?source=gnbHeader" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="group flex flex-col items-center justify-center p-5 bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/60 rounded-2xl hover:border-cyan-500 hover:shadow-lg dark:hover:shadow-cyan-500/5 transition-all duration-300 text-center gap-3 cursor-pointer"
+              >
+                <svg className="w-6 h-6 text-zinc-400 group-hover:text-cyan-500 dark:text-zinc-500 dark:group-hover:text-cyan-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                </svg>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-xs font-bold text-zinc-850 dark:text-zinc-200">Naukri Gulf</span>
+                  <span className="text-[9px] text-zinc-450 dark:text-zinc-500 font-semibold group-hover:text-cyan-500/70 transition-colors">Middle East CV</span>
+                </div>
+              </a>
+
+              {/* Instagram */}
+              <a 
+                href="https://www.instagram.com/myself_allwin/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="group flex flex-col items-center justify-center p-5 bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/60 rounded-2xl hover:border-pink-500 hover:shadow-lg dark:hover:shadow-pink-500/5 transition-all duration-300 text-center gap-3 cursor-pointer"
+              >
+                <svg className="w-6 h-6 text-zinc-400 group-hover:text-pink-500 dark:text-zinc-500 dark:group-hover:text-pink-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                </svg>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-xs font-bold text-zinc-850 dark:text-zinc-200">Instagram</span>
+                  <span className="text-[9px] text-zinc-450 dark:text-zinc-500 font-semibold group-hover:text-pink-500/70 transition-colors">Personal Social</span>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
       </section>
