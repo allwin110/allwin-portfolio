@@ -93,6 +93,29 @@ export default function Home() {
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, [menuOpen]);
 
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!("IntersectionObserver" in window)) return;
+
+    const revealItems = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    if (revealItems.length === 0) return;
+
+    document.documentElement.classList.add("motion-ready");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -36px 0px" });
+
+    revealItems.forEach((item) => observer.observe(item));
+    return () => {
+      observer.disconnect();
+      document.documentElement.classList.remove("motion-ready");
+    };
+  }, []);
+
   const visibleProjects = activeCategory === "All"
     ? projectsData
     : projectsData.filter((project) => project.category === activeCategory);
@@ -112,116 +135,153 @@ export default function Home() {
   return (
     <div className="portfolio-shell" data-theme={theme}>
       <a className="skip-link" href="#about">Skip to main content</a>
+      <header className="site-header glass-surface">
+        <Link className="wordmark" href="#home" onClick={closeMenu}>
+          Allwin Alex<span aria-hidden="true">.</span>
+        </Link>
+
+        <nav className="desktop-nav" aria-label="Main navigation">
+          <a href="#about">About</a>
+          <a href="#work">Work</a>
+          <a href="#experience">Experience</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div className="header-actions">
+          <Button
+            variant="ghost"
+            size="icon"
+            ref={menuButtonRef}
+            type="button"
+            className="theme-toggle"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+            title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+          >
+            {theme === "dark" ? (
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2m10-10h-2M4 12H2m17.07-7.07-1.42 1.42M6.35 17.65l-1.42 1.42m14.14 0-1.42-1.42M6.35 6.35 4.93 4.93" /></svg>
+            ) : (
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z" /></svg>
+            )}
+          </Button>
+          <a className={buttonVariants({ variant: "default", size: "default", className: "header-cta" })} href="#contact">Let’s talk</a>
+          <Button
+            variant="ghost"
+            size="icon"
+            type="button"
+            className="menu-toggle"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
+            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+          >
+            <span />
+            <span />
+          </Button>
+        </div>
+
+        <nav className="mobile-nav glass-surface" id="mobile-navigation" aria-label="Mobile navigation" hidden={!menuOpen}>
+          <a href="#about" onClick={closeMenu}>About</a>
+          <a href="#work" onClick={closeMenu}>Work</a>
+          <a href="#experience" onClick={closeMenu}>Experience</a>
+          <a href="#contact" onClick={closeMenu}>Contact</a>
+        </nav>
+      </header>
       <main id="main-content">
         <section className="hero" id="home" aria-labelledby="hero-title">
-          <header className="site-header glass-surface">
-              <Link className="wordmark" href="#home" onClick={closeMenu}>
-                Allwin Alex<span aria-hidden="true">.</span>
-              </Link>
-
-              <nav className="desktop-nav" aria-label="Main navigation">
-                <a href="#about">About</a>
-                <a href="#work">Work</a>
-                <a href="#experience">Experience</a>
-                <a href="#contact">Contact</a>
-              </nav>
-
-              <div className="header-actions">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  ref={menuButtonRef}
-                  type="button"
-                  className="theme-toggle"
-                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-                  title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-                >
-                  {theme === "dark" ? (
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2m10-10h-2M4 12H2m17.07-7.07-1.42 1.42M6.35 17.65l-1.42 1.42m14.14 0-1.42-1.42M6.35 6.35 4.93 4.93" /></svg>
-                  ) : (
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z" /></svg>
-                  )}
-                </Button>
-                <a className={buttonVariants({ variant: "default", size: "default", className: "header-cta" })} href="#contact">Contact</a>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  type="button"
-                  className="menu-toggle"
-                  onClick={() => setMenuOpen((open) => !open)}
-                  aria-expanded={menuOpen}
-                  aria-controls="mobile-navigation"
-                  aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
-                >
-                  <span />
-                  <span />
-                </Button>
-              </div>
-
-              <nav className="mobile-nav glass-surface" id="mobile-navigation" aria-label="Mobile navigation" hidden={!menuOpen}>
-                  <a href="#about" onClick={closeMenu}>About</a>
-                  <a href="#work" onClick={closeMenu}>Work</a>
-                  <a href="#experience" onClick={closeMenu}>Experience</a>
-                  <a href="#contact" onClick={closeMenu}>Contact</a>
-              </nav>
-          </header>
-
           <div className="hero-layout page-width">
-            <div className="hero-copy">
-              <p className="hero-role">Senior product designer <span aria-hidden="true">·</span> Enterprise UX</p>
-              <h1 id="hero-title">Allwin Alex<span className="hero-period">.</span></h1>
-              <p className="hero-statement">I make complex cloud, SaaS, and AI products easier to understand and use.</p>
+            <div className="hero-copy" data-reveal>
+              <p className="hero-role"><span className="role-dot" aria-hidden="true" /> Allwin Alex <span aria-hidden="true">·</span> Senior product designer</p>
+              <h1 id="hero-title">Complex systems.<br /><span>Clear decisions.</span></h1>
+              <p className="hero-statement">I design cloud, SaaS, and AI products that help people make confident decisions.</p>
               <div className="hero-actions">
                 <a className={buttonVariants({ variant: "default", size: "lg", className: "button-primary" })} href="#work">View selected work</a>
-                <a className={buttonVariants({ variant: "outline", size: "lg", className: "button-quiet" })} href="/Allwin_Alex_Resume.pdf" download>Download résumé</a>
-              </div>
-              <div className="hero-stats" aria-label="Career highlights">
-                <div><strong>9+</strong><span>Years in product design</span></div>
-                <div><strong>30+</strong><span>Enterprise projects</span></div>
-                <div><strong>5+</strong><span>AI workflows designed</span></div>
+                <a className={buttonVariants({ variant: "outline", size: "lg", className: "button-quiet" })} href="/Allwin_Alex_Resume.pdf" download>Download résumé <span aria-hidden="true">↓</span></a>
               </div>
             </div>
-            <figure className="hero-media">
+            <figure className="hero-media" data-reveal>
+              <div className="hero-glow" aria-hidden="true" />
+              <div className="hero-portrait-backdrop" aria-hidden="true">
+                <span className="portrait-orbit portrait-orbit-one" />
+                <span className="portrait-orbit portrait-orbit-two" />
+                <span className="portrait-grid" />
+              </div>
               <Image
-                src="/images/profile1.jpg"
-                alt="Allwin Alex standing outdoors in a suit and flat cap."
+                src="/images/allwin-cutout.png"
+                alt="Allwin Alex seated in a light grey suit."
                 fill
                 priority
-                sizes="(max-width: 700px) 100vw, 48vw"
+                sizes="(max-width: 700px) 96vw, 48vw"
                 className="hero-photo"
               />
+              <div className="hero-orbit-label glass-surface" aria-hidden="true">
+                <span className="orbit-label-mark">A.</span>
+                <span><strong>Product design</strong><small>Cloud · SaaS · AI</small></span>
+              </div>
               <figcaption className="hero-image-caption glass-surface">
-                <span>Allwin Alex</span>
-                <span>Product design · Chennai, India</span>
+                <span>Designing for clarity</span>
+                <span>Chennai, India <span aria-hidden="true">↗</span></span>
               </figcaption>
             </figure>
+          </div>
+          <div className="hero-proof page-width" aria-label="Career highlights">
+            <div className="hero-proof-intro">The work, in perspective</div>
+            <div><strong>9+</strong><span>Years in product design</span></div>
+            <div><strong>30+</strong><span>Enterprise projects</span></div>
+            <div><strong>5+</strong><span>AI workflows designed</span></div>
+            <a className="hero-proof-link" href="#work">Explore the work <span aria-hidden="true">↓</span></a>
           </div>
         </section>
 
         <section className="about-section page-width section-space" id="about" tabIndex={-1} aria-labelledby="about-title">
-          <div className="section-lead">
-            <p className="section-kicker">About</p>
-            <h2 id="about-title">Making the complex feel clear.</h2>
+          <div className="about-index" data-reveal>
+            <p className="section-kicker">A little context</p>
+            <span className="about-index-number" aria-hidden="true">01</span>
           </div>
-          <div className="about-copy">
-            <p className="about-primary">I design enterprise products that help people make confident decisions in complex systems.</p>
-            <p>With more than nine years across product design and service operations, I focus on cloud platforms, SaaS administration, AI-assisted workflows, and the design systems that bring them together.</p>
-            <ul className="focus-list" aria-label="Areas of focus">
-              <li>Cloud & infrastructure UX</li>
-              <li>AI-assisted workflows</li>
-              <li>Design systems & accessibility</li>
-            </ul>
+          <div className="about-content" data-reveal>
+            <h2 id="about-title">I work where complex systems meet real people.</h2>
+            <div className="about-bottom">
+              <p className="about-primary">With more than nine years across product design and service operations, I turn dense workflows into clear, confident experiences.</p>
+              <ul className="focus-list" aria-label="Areas of focus">
+                <li>Cloud & infrastructure</li>
+                <li>AI-assisted workflows</li>
+                <li>Design systems & accessibility</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section className="approach-section" aria-labelledby="approach-title">
+          <div className="approach-inner page-width">
+            <div className="approach-intro" data-reveal>
+              <p className="section-kicker">How I work</p>
+              <h2 id="approach-title">Good design starts before the interface.</h2>
+              <p>I connect user needs, system constraints, and engineering realities—so the result works beyond the prototype.</p>
+            </div>
+            <div className="approach-steps">
+              <article className="approach-step" data-reveal>
+                <span className="approach-node" aria-hidden="true">01</span>
+                <div><h3>Find the real problem</h3><p>Map the people, decisions, and constraints behind a workflow.</p></div>
+              </article>
+              <article className="approach-step" data-reveal>
+                <span className="approach-node" aria-hidden="true">02</span>
+                <div><h3>Shape the system</h3><p>Make information, roles, and next steps feel clear and connected.</p></div>
+              </article>
+              <article className="approach-step" data-reveal>
+                <span className="approach-node" aria-hidden="true">03</span>
+                <div><h3>Prove it in context</h3><p>Prototype, test, and work with engineering toward a buildable answer.</p></div>
+              </article>
+            </div>
           </div>
         </section>
 
         <section className="work-section section-space" id="work" aria-labelledby="work-title">
-          <div className="page-width">
-            <div className="work-heading">
+          <div className="page-width work-inner">
+            <div className="work-heading" data-reveal>
               <div>
-                <p className="section-kicker">Selected work</p>
-                <h2 id="work-title">Products built around real complexity.</h2>
-                <p className="section-description">A selection of enterprise platforms, onboarding tools, and operational workflows.</p>
+                <p className="section-kicker">Selected work <span aria-hidden="true">/ 04 case studies</span></p>
+                <h2 id="work-title">Built for the moments that matter.</h2>
+                <p className="section-description">A closer look at the systems, workflows, and decisions behind each product.</p>
               </div>
               <div className="work-filters glass-surface" role="group" aria-label="Filter projects by category">
                 {categories.map((category) => (
@@ -242,7 +302,7 @@ export default function Home() {
 
             <div className="project-list" aria-live="polite">
               {visibleProjects.map((project, index) => (
-                <article className={`project-row${index % 2 === 1 ? " project-row-reverse" : ""}`} key={project.id}>
+                <article className={`project-row${index % 2 === 1 ? " project-row-reverse" : ""}${index === 0 ? " project-featured" : ""}`} key={project.id} data-reveal>
                   <Link className="project-image-link" href={`/projects/${project.id}`} aria-label={`View ${project.title} case study`}>
                     <Image
                       src={project.image}
@@ -252,12 +312,14 @@ export default function Home() {
                       priority={index === 0}
                       className="project-image"
                     />
+                    <span className="project-image-index" aria-hidden="true">0{index + 1} <span>/ 0{visibleProjects.length}</span></span>
                     <span className="image-open" aria-hidden="true">↗</span>
                   </Link>
                   <div className="project-copy">
                     <p className="project-category">{project.category} <span aria-hidden="true">·</span> {project.subtitle}</p>
                     <h3><Link href={`/projects/${project.id}`}>{project.title}</Link></h3>
                     <p className="project-description">{project.description}</p>
+                    <div className="project-outcome"><span>Outcome</span><p>{project.results}</p></div>
                     <ul className="project-tags" aria-label={`${project.title} focus areas`}>
                       {project.tags.slice(0, 3).map((tag) => <li key={tag}>{tag}</li>)}
                     </ul>
@@ -269,7 +331,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="experience-section page-width section-space" id="experience" aria-labelledby="experience-title">
+        <section className="experience-section section-space" id="experience" aria-labelledby="experience-title">
+          <div className="page-width experience-inner">
           <div className="experience-heading">
             <p className="section-kicker">Experience</p>
             <h2 id="experience-title">A career shaped by people and systems.</h2>
@@ -277,7 +340,7 @@ export default function Home() {
           </div>
           <div className="experience-list">
             {experienceTimeline.map((job) => (
-              <article className="experience-item" key={job.company}>
+              <article className="experience-item" key={job.company} data-reveal>
                 <div className="experience-meta">
                   <p>{job.period}</p>
                   <p>{job.location}</p>
@@ -292,41 +355,51 @@ export default function Home() {
               </article>
             ))}
           </div>
+          </div>
         </section>
 
-        <section className="contact-section page-width section-space" id="contact" aria-labelledby="contact-title">
-          <div className="contact-main">
-            <p className="section-kicker">Contact</p>
-            <h2 id="contact-title">Let’s make complex products easier to use.</h2>
-            <p className="section-description">For product design roles, enterprise UX projects, or a thoughtful conversation about systems design.</p>
-            <a className={buttonVariants({ variant: "default", size: "lg", className: "button-primary contact-email" })} href="mailto:allwin110@live.in">Email Allwin</a>
-            <div className="phone-contact">
-              <Button
-                variant="link"
-                size="default"
-                type="button"
-                onClick={() => setPhoneRevealed((revealed) => !revealed)}
-                aria-expanded={phoneRevealed}
-                aria-controls="phone-details"
-              >
-                {phoneRevealed ? "Hide phone number" : "Show phone number"}
-              </Button>
-              <div id="phone-details" className="phone-details" hidden={!phoneRevealed}>
-                <a href="tel:+919677193923">+91 96771 93923</a>
-                <Button variant="outline" size="default" type="button" onClick={copyPhone}>
-                  {phoneCopied ? "Copied" : "Copy number"}
-                </Button>
-                <span className="visually-hidden" aria-live="polite">{phoneCopied ? "Phone number copied." : ""}</span>
+        <section className="contact-section section-space" id="contact" aria-labelledby="contact-title">
+          <div className="page-width contact-inner">
+            <div className="contact-main" data-reveal>
+              <p className="section-kicker">Have a complex problem?</p>
+              <h2 id="contact-title">Let’s make it feel clear.</h2>
+              <p className="section-description">For product design roles, enterprise UX projects, or a thoughtful conversation about systems design.</p>
+              <div className="contact-actions">
+                <a className={buttonVariants({ variant: "default", size: "lg", className: "button-primary contact-email" })} href="mailto:allwin110@live.in">Email Allwin <span aria-hidden="true">↗</span></a>
+                <div className="phone-contact">
+                  <Button
+                    variant="link"
+                    size="default"
+                    type="button"
+                    onClick={() => setPhoneRevealed((revealed) => !revealed)}
+                    aria-expanded={phoneRevealed}
+                    aria-controls="phone-details"
+                  >
+                    {phoneRevealed ? "Hide phone number" : "Show phone number"}
+                  </Button>
+                  <div id="phone-details" className="phone-details" hidden={!phoneRevealed}>
+                    <a href="tel:+919677193923">+91 96771 93923</a>
+                    <Button variant="outline" size="default" type="button" onClick={copyPhone}>
+                      {phoneCopied ? "Copied" : "Copy number"}
+                    </Button>
+                    <span className="visually-hidden" aria-live="polite">{phoneCopied ? "Phone number copied." : ""}</span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="contact-networks">
-            <h3>Find me elsewhere</h3>
-            <ul>
-              {networks.map((network) => (
-                <li key={network.label}><a href={network.href} target="_blank" rel="noopener noreferrer">{network.label}<span aria-hidden="true">↗</span><span className="visually-hidden"> (opens in a new tab)</span></a></li>
-              ))}
-            </ul>
+            <aside className="contact-card glass-surface" data-reveal aria-label="Contact and social profiles">
+              <div className="contact-card-heading"><span className="contact-card-mark" aria-hidden="true">A.</span><div><strong>Allwin Alex</strong><span>Product design · Chennai</span></div></div>
+              <h3>Let’s start a conversation.</h3>
+              <a className="contact-card-email" href="mailto:allwin110@live.in">allwin110@live.in <span aria-hidden="true">↗</span></a>
+              <div className="contact-networks">
+                <h4>Elsewhere</h4>
+                <ul>
+                  {networks.map((network) => (
+                    <li key={network.label}><a href={network.href} target="_blank" rel="noopener noreferrer">{network.label}<span aria-hidden="true">↗</span><span className="visually-hidden"> (opens in a new tab)</span></a></li>
+                  ))}
+                </ul>
+              </div>
+            </aside>
           </div>
         </section>
       </main>
