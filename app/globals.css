@@ -2835,6 +2835,39 @@ html[data-theme="dark"] .experience-item::before {
   font-size: 13px;
 }
 
+.experience-detail li {
+  position: relative;
+  padding-left: 18px;
+}
+
+.experience-detail li::before {
+  position: absolute;
+  top: 0.55em;
+  left: 1px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--deep-blue);
+  content: "";
+}
+
+html[data-theme="dark"] .experience-detail li::before {
+  background: #d9d9d8;
+}
+
+.contact-card-mark {
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #b1bbc8;
+}
+
+.contact-card-avatar {
+  object-fit: cover;
+  object-position: center 12%;
+}
+
+/* Reserve list markers as a fallback when custom bullets are used. */
 .experience-detail li::marker {
   color: var(--deep-blue);
 }

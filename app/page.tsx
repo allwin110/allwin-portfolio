@@ -357,7 +357,7 @@ export default function Home() {
               </div>
             </div>
             <aside className="contact-card glass-surface" data-reveal aria-label="Contact and social profiles">
-              <div className="contact-card-heading"><span className="contact-card-mark" aria-hidden="true">A.</span><div><strong>Allwin Alex</strong><span>Product design · Chennai</span></div></div>
+              <div className="contact-card-heading"><span className="contact-card-mark"><Image src="/images/allwin-cutout.png" alt="" fill sizes="40px" className="contact-card-avatar" /></span><div><strong>Allwin Alex</strong><span>Product design · Chennai</span></div></div>
               <h3>Let’s start a conversation.</h3>
               <a className="contact-card-email" href="mailto:allwin110@live.in">allwin110@live.in <span aria-hidden="true">↗</span></a>
               <div className="contact-networks">
