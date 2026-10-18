@@ -2018,6 +2018,17 @@ html[data-theme="dark"] .hero-copy h1 span {
   padding-inline: 22px;
 }
 
+.hero .button-quiet svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
 .hero .button-primary,
 .contact-email {
   border-color: var(--deep-blue);
@@ -3482,26 +3493,26 @@ html[data-theme="dark"] .site-header {
 
 .hero .hero-orbit-label,
 .hero .hero-image-caption {
-  border-color: rgba(255, 255, 255, 0.92);
-  background: rgba(245, 247, 248, 0.94);
-  color: #152b4b;
+  border-color: rgba(217, 217, 216, 0.56);
+  background: rgba(21, 43, 75, 0.94);
+  color: #ffffff;
 }
 
 .hero .hero-orbit-label small,
 .hero .hero-image-caption span + span {
-  color: #344e70;
+  color: #ffffff;
 }
 
 html[data-theme="dark"] .hero .hero-orbit-label,
 html[data-theme="dark"] .hero .hero-image-caption {
   border-color: rgba(217, 217, 216, 0.42);
-  background: rgba(20, 41, 73, 0.94);
-  color: #f0f1f1;
+  background: rgba(21, 43, 75, 0.96);
+  color: #ffffff;
 }
 
 html[data-theme="dark"] .hero .hero-orbit-label small,
 html[data-theme="dark"] .hero .hero-image-caption span + span {
-  color: #d1d9e3;
+  color: #ffffff;
 }
 
 .work-section {

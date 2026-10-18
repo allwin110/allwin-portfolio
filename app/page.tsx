@@ -64,8 +64,6 @@ export default function Home() {
   const [theme, setTheme] = useState<"dark" | "light">("light");
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
-  const [phoneRevealed, setPhoneRevealed] = useState(false);
-  const [phoneCopied, setPhoneCopied] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -121,16 +119,6 @@ export default function Home() {
     : projectsData.filter((project) => project.category === activeCategory);
 
   const closeMenu = () => setMenuOpen(false);
-
-  const copyPhone = async () => {
-    try {
-      await navigator.clipboard.writeText("+919677193923");
-      setPhoneCopied(true);
-      window.setTimeout(() => setPhoneCopied(false), 1800);
-    } catch {
-      setPhoneCopied(false);
-    }
-  };
 
   return (
     <div className="portfolio-shell" data-theme={theme}>
@@ -196,7 +184,7 @@ export default function Home() {
               <p className="hero-statement">I design cloud, SaaS, and AI products that help people make confident decisions.</p>
               <div className="hero-actions">
                 <a className={buttonVariants({ variant: "default", size: "lg", className: "button-primary" })} href="#work">View selected work</a>
-                <a className={buttonVariants({ variant: "outline", size: "lg", className: "button-quiet" })} href="/Allwin_Alex_Resume.pdf" download>Download résumé <span aria-hidden="true">↓</span></a>
+                <a className={buttonVariants({ variant: "outline", size: "lg", className: "button-quiet" })} href="/Allwin_Alex_Resume.pdf" download>Download résumé <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 17v3h14v-3" /></svg></a>
               </div>
             </div>
             <figure className="hero-media" data-reveal>
@@ -366,25 +354,6 @@ export default function Home() {
               <p className="section-description">For product design roles, enterprise UX projects, or a thoughtful conversation about systems design.</p>
               <div className="contact-actions">
                 <a className={buttonVariants({ variant: "default", size: "lg", className: "button-primary contact-email" })} href="mailto:allwin110@live.in">Email Allwin <span aria-hidden="true">↗</span></a>
-                <div className="phone-contact">
-                  <Button
-                    variant="link"
-                    size="default"
-                    type="button"
-                    onClick={() => setPhoneRevealed((revealed) => !revealed)}
-                    aria-expanded={phoneRevealed}
-                    aria-controls="phone-details"
-                  >
-                    {phoneRevealed ? "Hide phone number" : "Show phone number"}
-                  </Button>
-                  <div id="phone-details" className="phone-details" hidden={!phoneRevealed}>
-                    <a href="tel:+919677193923">+91 96771 93923</a>
-                    <Button variant="outline" size="default" type="button" onClick={copyPhone}>
-                      {phoneCopied ? "Copied" : "Copy number"}
-                    </Button>
-                    <span className="visually-hidden" aria-live="polite">{phoneCopied ? "Phone number copied." : ""}</span>
-                  </div>
-                </div>
               </div>
             </div>
             <aside className="contact-card glass-surface" data-reveal aria-label="Contact and social profiles">
