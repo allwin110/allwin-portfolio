@@ -1,9 +1,10 @@
 'use client';
 
-import { startTransition, useEffect, useState } from "react";
+import { startTransition, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { projectsData } from "./data/projects";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 const experienceTimeline = [
   {
@@ -60,15 +61,16 @@ const networks = [
 ];
 
 export default function Home() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light">("light");
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
   const [phoneRevealed, setPhoneRevealed] = useState(false);
   const [phoneCopied, setPhoneCopied] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem("theme");
-    if (savedTheme === "light" || savedTheme === "dark") {
+    if (savedTheme === "dark" || savedTheme === "light") {
       startTransition(() => setTheme(savedTheme));
     }
   }, []);
@@ -78,6 +80,18 @@ export default function Home() {
     document.documentElement.classList.toggle("dark", theme === "dark");
     window.localStorage.setItem("theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [menuOpen]);
 
   const visibleProjects = activeCategory === "All"
     ? projectsData
@@ -97,20 +111,10 @@ export default function Home() {
 
   return (
     <div className="portfolio-shell" data-theme={theme}>
+      <a className="skip-link" href="#about">Skip to main content</a>
       <main id="main-content">
         <section className="hero" id="home" aria-labelledby="hero-title">
-          <div className="hero-media">
-            <Image
-              src="/images/profile1.jpg"
-              alt="Allwin Alex, enterprise product designer"
-              fill
-              priority
-              sizes="100vw"
-              className="hero-photo"
-            />
-            <div className="hero-scrim" aria-hidden="true" />
-
-            <header className="site-header glass-surface">
+          <header className="site-header glass-surface">
               <Link className="wordmark" href="#home" onClick={closeMenu}>
                 Allwin Alex<span aria-hidden="true">.</span>
               </Link>
@@ -123,7 +127,10 @@ export default function Home() {
               </nav>
 
               <div className="header-actions">
-                <button
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  ref={menuButtonRef}
                   type="button"
                   className="theme-toggle"
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -135,9 +142,11 @@ export default function Home() {
                   ) : (
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z" /></svg>
                   )}
-                </button>
-                <a className="header-cta" href="#contact">Let’s talk</a>
-                <button
+                </Button>
+                <a className={buttonVariants({ variant: "default", size: "default", className: "header-cta" })} href="#contact">Contact</a>
+                <Button
+                  variant="ghost"
+                  size="icon"
                   type="button"
                   className="menu-toggle"
                   onClick={() => setMenuOpen((open) => !open)}
@@ -147,42 +156,50 @@ export default function Home() {
                 >
                   <span />
                   <span />
-                </button>
+                </Button>
               </div>
 
-              {menuOpen && (
-                <nav className="mobile-nav glass-surface" id="mobile-navigation" aria-label="Mobile navigation">
+              <nav className="mobile-nav glass-surface" id="mobile-navigation" aria-label="Mobile navigation" hidden={!menuOpen}>
                   <a href="#about" onClick={closeMenu}>About</a>
-                  <a href="#work" onClick={closeMenu}>Selected work</a>
+                  <a href="#work" onClick={closeMenu}>Work</a>
                   <a href="#experience" onClick={closeMenu}>Experience</a>
                   <a href="#contact" onClick={closeMenu}>Contact</a>
-                </nav>
-              )}
-            </header>
+              </nav>
+          </header>
 
-            <p className="hero-location">Chennai, India <span aria-hidden="true">·</span> GMT +5:30</p>
-          </div>
-
-          <div className="hero-copy page-width">
-            <div className="hero-intro">
-              <p className="hero-role">Senior product designer <span aria-hidden="true">/</span> Enterprise UX</p>
-              <p className="hero-statement">Clear, capable experiences for complex cloud, SaaS, and AI products.</p>
+          <div className="hero-layout page-width">
+            <div className="hero-copy">
+              <p className="hero-role">Senior product designer <span aria-hidden="true">·</span> Enterprise UX</p>
+              <h1 id="hero-title">Allwin Alex<span className="hero-period">.</span></h1>
+              <p className="hero-statement">I make complex cloud, SaaS, and AI products easier to understand and use.</p>
               <div className="hero-actions">
-                <a className="button button-primary" href="#work">Explore selected work <span aria-hidden="true">↘</span></a>
-                <a className="button button-quiet" href="/Allwin_Alex_Resume.pdf" target="_blank" rel="noreferrer">View résumé <span aria-hidden="true">↗</span></a>
+                <a className={buttonVariants({ variant: "default", size: "lg", className: "button-primary" })} href="#work">View selected work</a>
+                <a className={buttonVariants({ variant: "outline", size: "lg", className: "button-quiet" })} href="/Allwin_Alex_Resume.pdf" download>Download résumé</a>
+              </div>
+              <div className="hero-stats" aria-label="Career highlights">
+                <div><strong>9+</strong><span>Years in product design</span></div>
+                <div><strong>30+</strong><span>Enterprise projects</span></div>
+                <div><strong>5+</strong><span>AI workflows designed</span></div>
               </div>
             </div>
-            <h1 id="hero-title">Allwin<span className="mobile-name-break"><br /></span> Alex<span className="hero-period">.</span></h1>
-          </div>
-
-          <div className="hero-stats page-width" aria-label="Career highlights">
-            <div><strong>9+</strong><span>Years in product design</span></div>
-            <div><strong>30+</strong><span>Enterprise projects</span></div>
-            <div><strong>5+</strong><span>AI workflows designed</span></div>
+            <figure className="hero-media">
+              <Image
+                src="/images/profile1.jpg"
+                alt="Allwin Alex standing outdoors in a suit and flat cap."
+                fill
+                priority
+                sizes="(max-width: 700px) 100vw, 48vw"
+                className="hero-photo"
+              />
+              <figcaption className="hero-image-caption glass-surface">
+                <span>Allwin Alex</span>
+                <span>Product design · Chennai, India</span>
+              </figcaption>
+            </figure>
           </div>
         </section>
 
-        <section className="about-section page-width section-space" id="about" aria-labelledby="about-title">
+        <section className="about-section page-width section-space" id="about" tabIndex={-1} aria-labelledby="about-title">
           <div className="section-lead">
             <p className="section-kicker">About</p>
             <h2 id="about-title">Making the complex feel clear.</h2>
@@ -208,7 +225,9 @@ export default function Home() {
               </div>
               <div className="work-filters glass-surface" role="group" aria-label="Filter projects by category">
                 {categories.map((category) => (
-                  <button
+                  <Button
+                    variant={activeCategory === category ? "default" : "outline"}
+                    size="default"
                     type="button"
                     key={category}
                     className={activeCategory === category ? "filter-button is-active" : "filter-button"}
@@ -216,7 +235,7 @@ export default function Home() {
                     aria-pressed={activeCategory === category}
                   >
                     {category}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -280,23 +299,32 @@ export default function Home() {
             <p className="section-kicker">Contact</p>
             <h2 id="contact-title">Let’s make complex products easier to use.</h2>
             <p className="section-description">For product design roles, enterprise UX projects, or a thoughtful conversation about systems design.</p>
-            <a className="button button-primary contact-email" href="mailto:allwin110@live.in">allwin110@live.in <span aria-hidden="true">↗</span></a>
+            <a className={buttonVariants({ variant: "default", size: "lg", className: "button-primary contact-email" })} href="mailto:allwin110@live.in">Email Allwin</a>
             <div className="phone-contact">
-              {phoneRevealed ? (
-                <>
-                  <a href="tel:+919677193923">+91 96771 93923</a>
-                  <button type="button" onClick={copyPhone}>{phoneCopied ? "Copied" : "Copy number"}</button>
-                </>
-              ) : (
-                <button type="button" onClick={() => setPhoneRevealed(true)} aria-expanded="false">Show phone number</button>
-              )}
+              <Button
+                variant="link"
+                size="default"
+                type="button"
+                onClick={() => setPhoneRevealed((revealed) => !revealed)}
+                aria-expanded={phoneRevealed}
+                aria-controls="phone-details"
+              >
+                {phoneRevealed ? "Hide phone number" : "Show phone number"}
+              </Button>
+              <div id="phone-details" className="phone-details" hidden={!phoneRevealed}>
+                <a href="tel:+919677193923">+91 96771 93923</a>
+                <Button variant="outline" size="default" type="button" onClick={copyPhone}>
+                  {phoneCopied ? "Copied" : "Copy number"}
+                </Button>
+                <span className="visually-hidden" aria-live="polite">{phoneCopied ? "Phone number copied." : ""}</span>
+              </div>
             </div>
           </div>
           <div className="contact-networks">
             <h3>Find me elsewhere</h3>
             <ul>
               {networks.map((network) => (
-                <li key={network.label}><a href={network.href} target="_blank" rel="noopener noreferrer">{network.label}<span aria-hidden="true">↗</span></a></li>
+                <li key={network.label}><a href={network.href} target="_blank" rel="noopener noreferrer">{network.label}<span aria-hidden="true">↗</span><span className="visually-hidden"> (opens in a new tab)</span></a></li>
               ))}
             </ul>
           </div>

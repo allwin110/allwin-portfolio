@@ -1,9 +1,10 @@
 'use client';
 
-import { use, useState, useEffect } from 'react';
+import { use, useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { projectsData, type Project } from '../../data/projects';
+import { buttonVariants } from '@/components/ui/button';
 
 export default function ProjectPage({
   params,
@@ -15,24 +16,45 @@ export default function ProjectPage({
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const lightboxCloseRef = useRef<HTMLButtonElement>(null);
+  const lightboxTriggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem('theme');
-    const theme = savedTheme === 'light' ? 'light' : 'dark';
+    const theme = savedTheme === 'dark' ? 'dark' : 'light';
     document.documentElement.dataset.theme = theme;
     document.documentElement.classList.toggle('dark', theme === 'dark');
   }, []);
 
-  // Esc key listener & scroll lock for Lightbox
+  // Keep keyboard users inside the lightbox until they close it.
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setIsLightboxOpen(false);
+        window.requestAnimationFrame(() => lightboxTriggerRef.current?.focus());
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        const focusable = document.querySelectorAll<HTMLElement>(
+          '[data-lightbox] button:not([disabled]), [data-lightbox] a[href], [data-lightbox] [tabindex]:not([tabindex="-1"])',
+        );
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last?.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
       }
     };
     if (isLightboxOpen) {
       window.addEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'hidden';
+      lightboxCloseRef.current?.focus();
     } else {
       document.body.style.overflow = '';
     }
@@ -51,7 +73,7 @@ export default function ProjectPage({
         </p>
         <Link
           href="/"
-          className="px-6 py-3 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-955 font-bold rounded-full transition-all text-sm shadow-md"
+          className={buttonVariants({ variant: 'default', size: 'lg', className: 'case-study-cta' })}
         >
           ← Back to Portfolio
         </Link>
@@ -67,6 +89,10 @@ export default function ProjectPage({
   const displayImageName = project.images && project.images.length > 0 && project.imageNames
     ? project.imageNames[activeImageIndex]
     : project.title;
+  const closeLightbox = () => {
+    setIsLightboxOpen(false);
+    window.requestAnimationFrame(() => lightboxTriggerRef.current?.focus());
+  };
 
   // Global layout wrapper for unified presentation
   return (
@@ -78,13 +104,13 @@ export default function ProjectPage({
       {/* Dynamic Header */}
       <header className="sticky top-4 z-40 w-full px-4 md:px-0 mb-8">
         <nav className="max-w-6xl mx-auto bg-white/80 dark:bg-zinc-900/70 backdrop-blur-md border border-zinc-200/50 dark:border-zinc-800/40 rounded-full py-3.5 px-6 shadow-xl flex items-center justify-between transition-all duration-300">
-          <Link href="/" className="text-xl font-bold tracking-tight bg-gradient-to-r from-violet-600 to-cyan-500 dark:from-violet-400 dark:to-cyan-400 bg-clip-text text-transparent hover:opacity-90 transition-opacity">
+          <Link href="/" className="case-study-wordmark text-xl font-bold tracking-tight hover:opacity-90 transition-opacity">
             ALLWIN ALEX.
           </Link>
           
           <Link 
             href="/"
-            className="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors py-1.5 px-3 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800/60 cursor-pointer"
+            className={buttonVariants({ variant: 'outline', size: 'default', className: 'case-study-back group inline-flex gap-2 text-sm font-semibold uppercase tracking-wide' })}
           >
             <span className="transition-transform group-hover:-translate-x-1 duration-200">←</span> Back to Portfolio
           </Link>
@@ -105,13 +131,11 @@ export default function ProjectPage({
 
         {/* Dynamic Visual Screen Header Grid */}
         <section className="mb-12">
-          <div 
-            onClick={() => setIsLightboxOpen(true)}
-            className="relative w-full h-[280px] sm:h-[420px] md:h-[580px] bg-zinc-950 rounded-[32px] md:rounded-[48px] overflow-hidden border border-zinc-200/50 dark:border-zinc-800/50 shadow-2xl select-none cursor-zoom-in group"
-          >
+          <div className="relative w-full h-[280px] sm:h-[420px] md:h-[580px] bg-zinc-950 rounded-[32px] md:rounded-[48px] overflow-hidden border border-zinc-200/50 dark:border-zinc-800/50 shadow-2xl select-none group">
             <Image 
               src={displayImage}
               alt={displayImageName}
+              id="case-study-image"
               fill
               priority
               className="object-cover opacity-95 transition-all duration-750 hover:scale-[1.005]"
@@ -124,16 +148,24 @@ export default function ProjectPage({
             </div>
 
             {/* Premium Zoom indicator */}
-            <div className="absolute top-6 right-6 bg-zinc-950/70 border border-zinc-800/60 backdrop-blur-md p-2.5 rounded-full text-white/80 group-hover:text-white transition-colors shadow-2xl pointer-events-none z-10">
+            <button
+              ref={lightboxTriggerRef}
+              type="button"
+              onClick={() => setIsLightboxOpen(true)}
+              className="absolute top-6 right-6 z-10 flex size-11 items-center justify-center rounded-full border border-white/70 bg-zinc-950/85 text-white shadow-2xl backdrop-blur-md transition-colors hover:bg-zinc-800"
+              aria-label={`Open full-size image: ${displayImageName}`}
+              aria-controls="case-study-lightbox"
+            >
               <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
               </svg>
-            </div>
+            </button>
 
             {/* Slider Arrows */}
             {project.images && project.images.length > 1 && (
               <>
                 <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     setActiveImageIndex((prev) => (prev === 0 ? project.images!.length - 1 : prev - 1));
@@ -146,6 +178,7 @@ export default function ProjectPage({
                   </svg>
                 </button>
                 <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     setActiveImageIndex((prev) => (prev === project.images!.length - 1 ? 0 : prev + 1));
@@ -167,12 +200,15 @@ export default function ProjectPage({
               {project.images.map((img, i) => (
                 <button
                   key={i}
+                  type="button"
                   onClick={() => setActiveImageIndex(i)}
                   className={`relative w-24 sm:w-32 h-14 sm:h-18 rounded-2xl overflow-hidden border-2 transition-all cursor-pointer ${
                     i === activeImageIndex
                       ? "border-cyan-500 scale-[1.02] shadow-xl"
                       : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 opacity-60 hover:opacity-90"
                   }`}
+                  aria-label={`Show ${project.imageNames?.[i] ?? `image ${i + 1}`}`}
+                  aria-pressed={i === activeImageIndex}
                 >
                   <Image 
                     src={img} 
@@ -208,14 +244,26 @@ export default function ProjectPage({
       </footer>
 
       {/* Premium Lightbox Modal */}
-      {isLightboxOpen && (
-        <div 
+      <div
+          id="case-study-lightbox"
+          data-lightbox
+        hidden={!isLightboxOpen}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="case-study-lightbox-title"
+          aria-describedby="case-study-lightbox-description"
+          tabIndex={-1}
           className="fixed inset-0 bg-zinc-950/98 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4 sm:p-8 animate-fade-in"
-          onClick={() => setIsLightboxOpen(false)}
-        >
+        onClick={closeLightbox}
+      >
           {/* Close button */}
           <button 
-            onClick={() => setIsLightboxOpen(false)}
+            ref={lightboxCloseRef}
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              closeLightbox();
+            }}
             className="absolute top-6 right-6 w-12 h-12 bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-white rounded-full flex items-center justify-center transition-all cursor-pointer shadow-2xl hover:scale-110 active:scale-90"
             aria-label="Close image preview"
           >
@@ -239,11 +287,10 @@ export default function ProjectPage({
 
           {/* Lightbox Caption */}
           <div className="mt-6 text-center select-none max-w-xl">
-            <h4 className="text-sm font-bold text-zinc-150 tracking-wide uppercase">{displayImageName}</h4>
-            <p className="text-zinc-500 text-xs mt-1.5 font-medium">Click anywhere outside or press ESC to exit</p>
+            <h2 id="case-study-lightbox-title" className="text-sm font-bold text-zinc-150 tracking-wide uppercase">{displayImageName}</h2>
+            <p id="case-study-lightbox-description" className="text-zinc-300 text-sm mt-1.5 font-medium">Press Escape to close the image preview.</p>
           </div>
-        </div>
-      )}
+      </div>
 
     </div>
   );
@@ -839,15 +886,15 @@ function SidebarGeneral({ project }: { project: Project }) {
         </p>
         
         <div className="flex flex-col gap-3 mt-2 w-full">
-          <a 
+          <a
             href="mailto:allwin110@live.in"
-            className="w-full inline-flex items-center justify-center px-6 py-3.5 bg-violet-600 hover:bg-violet-750 dark:bg-violet-600 dark:hover:bg-violet-550 text-white font-bold rounded-2xl transition-all text-xs shadow-md shadow-violet-950/10 cursor-pointer"
+            className={buttonVariants({ variant: 'default', size: 'lg', className: 'case-study-cta w-full' })}
           >
-            ✉ Email Me
+            Email Allwin
           </a>
           <Link 
             href="/"
-            className="w-full inline-flex items-center justify-center px-6 py-3 bg-white hover:bg-zinc-50 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-200 font-bold rounded-2xl transition-all text-xs cursor-pointer"
+            className={buttonVariants({ variant: 'outline', size: 'lg', className: 'case-study-back w-full' })}
           >
             ← Back to Portfolio
           </Link>
