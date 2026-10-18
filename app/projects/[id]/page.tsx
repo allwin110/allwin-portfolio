@@ -3,7 +3,7 @@
 import { use, useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { projectsData } from '../../data/projects';
+import { projectsData, type Project } from '../../data/projects';
 
 export default function ProjectPage({
   params,
@@ -15,6 +15,13 @@ export default function ProjectPage({
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+  useEffect(() => {
+    const savedTheme = window.localStorage.getItem('theme');
+    const theme = savedTheme === 'light' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, []);
 
   // Esc key listener & scroll lock for Lightbox
   useEffect(() => {
@@ -37,7 +44,7 @@ export default function ProjectPage({
 
   if (!project) {
     return (
-      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 flex flex-col items-center justify-center p-6 text-center">
+      <div className="portfolio-shell portfolio-case-study min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 flex flex-col items-center justify-center p-6 text-center">
         <h1 className="text-4xl font-extrabold mb-4 bg-gradient-to-r from-red-500 to-amber-500 bg-clip-text text-transparent">Project Not Found</h1>
         <p className="text-zinc-500 dark:text-zinc-400 mb-8 max-w-md">
           The case study you are looking for does not exist or may have been relocated.
@@ -63,7 +70,7 @@ export default function ProjectPage({
 
   // Global layout wrapper for unified presentation
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans selection:bg-violet-500 selection:text-white transition-colors duration-300 overflow-x-hidden">
+    <div className="portfolio-shell portfolio-case-study min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans selection:bg-violet-500 selection:text-white transition-colors duration-300 overflow-x-hidden">
       
       {/* Full Page Radial Gradient Background */}
       <div className="fixed inset-0 bg-radial-gradient pointer-events-none z-0" />
@@ -245,7 +252,7 @@ export default function ProjectPage({
 // -------------------------------------------------------------
 // Component 1: Cloud Orchestration Layout
 // -------------------------------------------------------------
-function CloudOrchestrationLayout({ project }: { project: any }) {
+function CloudOrchestrationLayout({ project }: { project: Project }) {
   return (
     <div className="animate-fade-in">
       <section className="mb-10 text-left">
@@ -365,7 +372,7 @@ function CloudOrchestrationLayout({ project }: { project: any }) {
 // -------------------------------------------------------------
 // Component 2: Cloud Director Layout
 // -------------------------------------------------------------
-function CloudDirectorLayout({ project }: { project: any }) {
+function CloudDirectorLayout({ project }: { project: Project }) {
   return (
     <div className="animate-fade-in">
       <section className="mb-10 text-left">
@@ -503,7 +510,7 @@ function CloudDirectorLayout({ project }: { project: any }) {
 // -------------------------------------------------------------
 // Component 3: Developer Experience Layout
 // -------------------------------------------------------------
-function DeveloperExperienceLayout({ project }: { project: any }) {
+function DeveloperExperienceLayout({ project }: { project: Project }) {
   return (
     <div className="animate-fade-in">
       <section className="mb-10 text-left">
@@ -621,7 +628,7 @@ function DeveloperExperienceLayout({ project }: { project: any }) {
 // -------------------------------------------------------------
 // Component 4: AI Onboarding Layout
 // -------------------------------------------------------------
-function AIOnboardingLayout({ project }: { project: any }) {
+function AIOnboardingLayout({ project }: { project: Project }) {
   return (
     <div className="animate-fade-in">
       <section className="mb-10 text-left">
@@ -743,7 +750,7 @@ function AIOnboardingLayout({ project }: { project: any }) {
 // -------------------------------------------------------------
 // Sidebar Shared Panel Component
 // -------------------------------------------------------------
-function SidebarGeneral({ project }: { project: any }) {
+function SidebarGeneral({ project }: { project: Project }) {
   return (
     <>
       {/* Project Overview metadata */}
@@ -828,7 +835,7 @@ function SidebarGeneral({ project }: { project: any }) {
           Interested in modernizing your platform?
         </h4>
         <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed font-medium">
-          Let's collaborate on complex dashboards, UX audits, or system structures.
+          Let&apos;s collaborate on complex dashboards, UX audits, or system structures.
         </p>
         
         <div className="flex flex-col gap-3 mt-2 w-full">
