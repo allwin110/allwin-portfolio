@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { projectsData } from "./data/projects";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { PortfolioCursor } from "@/components/portfolio-cursor";
 
 const experienceTimeline = [
   {
@@ -122,6 +123,7 @@ export default function Home() {
 
   return (
     <div className="portfolio-shell" data-theme={theme}>
+      <PortfolioCursor />
       <a className="skip-link" href="#about">Skip to main content</a>
       <header className="site-header glass-surface">
         <Link className="wordmark" href="#home" onClick={closeMenu}>
@@ -187,7 +189,15 @@ export default function Home() {
                 <a className={buttonVariants({ variant: "outline", size: "lg", className: "button-quiet" })} href="/Allwin_Alex_Resume.pdf" download>Download résumé <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 17v3h14v-3" /></svg></a>
               </div>
             </div>
-            <figure className="hero-media" data-reveal>
+            <figure className="hero-media hero-hairline" data-reveal onPointerMove={(event) => {
+              if (event.pointerType !== "mouse") return;
+              const bounds = event.currentTarget.getBoundingClientRect();
+              event.currentTarget.style.setProperty("--pointer-x", `${((event.clientX - bounds.left) / bounds.width - 0.5) * 2}`);
+              event.currentTarget.style.setProperty("--pointer-y", `${((event.clientY - bounds.top) / bounds.height - 0.5) * 2}`);
+            }} onPointerLeave={(event) => {
+              event.currentTarget.style.setProperty("--pointer-x", "0");
+              event.currentTarget.style.setProperty("--pointer-y", "0");
+            }}>
               <div className="hero-glow" aria-hidden="true" />
               <div className="hero-portrait-backdrop" aria-hidden="true">
                 <span className="portrait-orbit portrait-orbit-one" />
