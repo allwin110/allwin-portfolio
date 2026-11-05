@@ -3726,6 +3726,11 @@ html[data-theme="dark"] .hero-proof strong {
   --pointer-y: 0;
 }
 
+html.custom-cursor-active,
+html.custom-cursor-active * {
+  cursor: none !important;
+}
+
 .portfolio-cursor {
   --cursor-x: -100px;
   --cursor-y: -100px;
