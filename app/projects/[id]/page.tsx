@@ -98,6 +98,27 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
           <div className="story-decision-card story-gallery-index"><span className="story-decision-number">B</span><div><h3>Follow the interface</h3><ol>{images.map((image, index) => <li key={image}><span>{String(index + 1).padStart(2, '0')}</span>{imageNames[index] ?? `Project screen ${index + 1}`}</li>)}</ol></div></div>
         </section>
 
+        <section className="related-screen" aria-labelledby="related-screen-title">
+          <div className="related-screen-heading">
+            <p className="story-overline">A RELATED SCREEN · SAMPLE UI</p>
+            <h2 id="related-screen-title">The system, made easier to scan.</h2>
+            <p>This illustrative interface uses fictional labels and sample values. It contains no client data.</p>
+          </div>
+          <figure className="sample-dashboard" aria-label="Illustrative product dashboard with dummy data">
+            <div className="sample-dashboard-bar"><span className="sample-dashboard-brand"><i aria-hidden="true" /> northstar <small>WORKSPACE</small></span><span className="sample-dashboard-profile">JD</span></div>
+            <div className="sample-dashboard-layout">
+              <nav className="sample-dashboard-nav" aria-label="Sample dashboard"><strong>Workspace</strong><span className="is-current">Overview</span><span>Activity</span><span>Projects</span><span>Settings</span></nav>
+              <div className="sample-dashboard-content">
+                <div className="sample-dashboard-title"><div><span>MONDAY, 09:41 AM · SAMPLE DATA</span><h3>Good morning, Jordan</h3><p>Here’s a clear view of what needs attention.</p></div><button type="button" tabIndex={-1}>Last 7 days <span aria-hidden="true">⌄</span></button></div>
+                <div className="sample-dashboard-stats"><article><span>Active workflows</span><strong>08</strong><small>Across 3 teams</small></article><article><span>System health</span><strong>96<span>%</span></strong><small>All services normal</small></article><article><span>Needs review</span><strong>04</strong><small>2 items due today</small></article></div>
+                <div className="sample-dashboard-chart"><div><span>Workflow activity</span><small>Illustrative · not production data</small></div><svg viewBox="0 0 640 130" role="img" aria-label="Decorative sample line chart"><path className="sample-chart-grid" d="M0 25H640M0 65H640M0 105H640"/><path className="sample-chart-line" d="M0 90 C42 84 48 45 96 55 S152 89 198 67 S248 76 294 43 S350 62 395 51 S450 33 493 47 S548 69 586 31 S620 42 640 21"/><path className="sample-chart-area" d="M0 90 C42 84 48 45 96 55 S152 89 198 67 S248 76 294 43 S350 62 395 51 S450 33 493 47 S548 69 586 31 S620 42 640 21V130H0Z"/></svg></div>
+                <div className="sample-dashboard-tasks"><span>RECENT ACTIVITY</span><div><i className="sample-task-dot" /> Pipeline Alpha <small>Ready for review</small><b>Today</b></div><div><i className="sample-task-dot is-blue" /> Workspace update <small>In progress</small><b>Yesterday</b></div></div>
+              </div>
+            </div>
+            <figcaption>Illustrative concept · Fictional sample data</figcaption>
+          </figure>
+        </section>
+
         <section className="story-outcome" id="the-outcome" aria-labelledby="outcome-title">
           <p className="story-overline">04 / THE OUTCOME</p><h2 id="outcome-title">A clearer experience, with impact that matters.</h2><p className="story-outcome-statement">{project.results}</p><div className="story-outcome-bottom"><span>Next case</span><Link href={`/#work`}>Explore the full body of work <span aria-hidden="true">↗</span></Link></div>
         </section>

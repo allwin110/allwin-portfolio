@@ -6,6 +6,7 @@ import Link from "next/link";
 import { projectsData } from "./data/projects";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { PortfolioCursor } from "@/components/portfolio-cursor";
+import { Hub } from "@lucasmarkes/hairline/react";
 
 const experienceTimeline = [
   {
@@ -227,7 +228,7 @@ export default function Home() {
             <div><strong>9+</strong><span>Years in product design</span></div>
             <div><strong>30+</strong><span>Enterprise projects</span></div>
             <div><strong>5+</strong><span>AI workflows designed</span></div>
-            <a className="hero-proof-link" href="#work">Explore the work <span aria-hidden="true">↓</span></a>
+            <a className="hero-proof-link" href="#work">Explore the work <svg className="explore-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7 17 17M17 7v10H7" /></svg></a>
           </div>
         </section>
 
@@ -255,6 +256,10 @@ export default function Home() {
               <p className="section-kicker">How I work</p>
               <h2 id="approach-title">Good design starts before the interface.</h2>
               <p>I connect user needs, system constraints, and engineering realities—so the result works beyond the prototype.</p>
+              <div className="approach-hairline-panel">
+                <div className="approach-hairline-caption"><span>Systems in motion</span><span>Move across the map</span></div>
+                <Hub className="approach-hairline-figure" intensity={0.72} theme="auto" label="Interactive isometric map of connected product system components" play tabIndex={0} />
+              </div>
             </div>
             <div className="approach-steps">
               <article className="approach-step" data-reveal>
