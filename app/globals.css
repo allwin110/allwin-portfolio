@@ -4256,12 +4256,12 @@ html:not([data-theme="dark"]) .hero {
 .hero-project-card {
   position: absolute;
   display: grid;
-  grid-template-columns: 56px minmax(0, 1fr) 18px;
+  grid-template-columns: 42px minmax(0, 1fr) 16px;
   align-items: center;
-  gap: 10px;
-  width: 208px;
+  gap: 8px;
+  width: 220px;
   min-height: 82px;
-  padding: 9px;
+  padding: 8px;
   border: 1px solid rgba(255, 255, 255, .96);
   border-radius: 17px;
   background: rgba(255, 255, 255, .91);
@@ -4312,8 +4312,8 @@ html:not([data-theme="dark"]) .hero {
 .hero-project-thumb {
   position: relative;
   display: block;
-  width: 56px;
-  height: 58px;
+  width: 42px;
+  height: 46px;
   overflow: hidden;
   border: 1px solid rgba(42, 77, 136, .12);
   border-radius: 11px;
@@ -4322,8 +4322,8 @@ html:not([data-theme="dark"]) .hero {
 
 .hero-project-thumb img { object-fit: cover; }
 .hero-project-copy { display: flex; min-width: 0; flex-direction: column; gap: 4px; }
-.hero-project-copy > span { color: #526b8c; font-size: 9px; font-weight: 730; letter-spacing: .075em; text-transform: uppercase; }
-.hero-project-copy strong { display: -webkit-box; overflow: hidden; color: var(--portfolio-ink); font-size: 12px; font-weight: 720; line-height: 1.2; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.hero-project-copy > span { overflow: hidden; color: #526b8c; font-size: 8px; font-weight: 730; letter-spacing: .045em; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.hero-project-copy strong { overflow: hidden; color: var(--portfolio-ink); font-size: 11px; font-weight: 720; line-height: 1.2; text-overflow: ellipsis; white-space: nowrap; }
 .hero-project-arrow { width: 16px; height: 16px; fill: none; stroke: #5579b0; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .hero-project-card:focus-visible { outline: 3px solid #315b9d; outline-offset: 4px; }
 
