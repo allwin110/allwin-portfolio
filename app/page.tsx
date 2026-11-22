@@ -151,9 +151,9 @@ export default function Home() {
             title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
           >
             {theme === "dark" ? (
-              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2m10-10h-2M4 12H2m17.07-7.07-1.42 1.42M6.35 17.65l-1.42 1.42m14.14 0-1.42-1.42M6.35 6.35 4.93 4.93" /></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm0 17a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM4.22 4.22a1 1 0 0 1 1.42 0l.7.7a1 1 0 0 1-1.42 1.42l-.7-.7a1 1 0 0 1 0-1.42Zm12.02 12.02a1 1 0 0 1 1.42 0l.7.7a1 1 0 0 1-1.42 1.42l-.7-.7a1 1 0 0 1 0-1.42ZM2 12a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1Zm17 0a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2h-1a1 1 0 0 1-1-1ZM4.22 19.78a1 1 0 0 1 0-1.42l.7-.7a1 1 0 1 1 1.42 1.42l-.7.7a1 1 0 0 1-1.42 0ZM16.24 5.64a1 1 0 0 1 0-1.42l.7-.7a1 1 0 0 1 1.42 1.42l-.7.7a1 1 0 0 1-1.42 0ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Z" /></svg>
             ) : (
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z" /></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.37 5.51A8.5 8.5 0 0 0 18.49 14.6 8.5 8.5 0 1 1 9.37 5.51Zm3.04-2.3a10.5 10.5 0 1 0 8.38 13.91 1 1 0 0 0-1.16-1.38A6.5 6.5 0 0 1 10.1 6.2a1 1 0 0 0-1.38-1.16c1.04-.72 2.3-1.27 3.69-1.82Z" /></svg>
             )}
           </Button>
           <a className={buttonVariants({ variant: "default", size: "default", className: "header-cta" })} href="#contact">Let’s talk</a>
@@ -201,39 +201,14 @@ export default function Home() {
               event.currentTarget.style.setProperty("--pointer-y", "0");
             }}>
               <div className="hero-glow" aria-hidden="true" />
-              <div className="hero-portrait-backdrop" aria-hidden="true">
-                <span className="portrait-orbit portrait-orbit-one" />
-                <span className="portrait-orbit portrait-orbit-two" />
-                <span className="portrait-grid" />
-              </div>
               <Image
-                src="/images/allwin-cutout.png"
-                alt="Allwin Alex seated in a light grey suit."
+                src={theme === "dark" ? "/images/allwin-hero-dark.webp" : "/images/allwin-hero-light.webp"}
+                alt={theme === "dark" ? "Allwin Alex in a black suit against a dark studio background." : "Allwin Alex in a blue blazer against a charcoal background."}
                 fill
                 priority
                 sizes="(max-width: 700px) 96vw, 48vw"
                 className="hero-photo"
               />
-              <div className="hero-project-cards" role="group" aria-label="Featured case studies">
-                {projectsData.slice(0, 3).map((project, index) => (
-                  <Link
-                    className={`hero-project-card hero-project-card-${index + 1}`}
-                    href={`/projects/${project.id}`}
-                    key={project.id}
-                    aria-label={`View ${project.title} case study`}
-                  >
-                    <span className="hero-project-thread" aria-hidden="true" />
-                    <span className="hero-project-thumb">
-                      <Image src={project.image} alt="" fill sizes="56px" />
-                    </span>
-                    <span className="hero-project-copy">
-                      <span>{project.category}</span>
-                      <strong>{["Cloud console", "AI onboarding", "Platform UX"][index] ?? project.title}</strong>
-                    </span>
-                    <svg className="hero-project-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
-                  </Link>
-                ))}
-              </div>
               <div className="hero-orbit-label glass-surface" aria-hidden="true">
                 <span className="orbit-label-mark">A.</span>
                 <span><strong>Product design</strong><small>Cloud · SaaS · AI</small></span>
@@ -245,7 +220,7 @@ export default function Home() {
             </figure>
           </div>
           <div className="hero-proof page-width" aria-label="Career highlights">
-            <div className="hero-proof-intro">The work, in perspective</div>
+            <div className="hero-proof-intro">Clarity, measured in outcomes</div>
             <div><strong>9+</strong><span>Years in product design</span></div>
             <div><strong>30+</strong><span>Enterprise projects</span></div>
             <div><strong>5+</strong><span>AI workflows designed</span></div>
@@ -279,7 +254,7 @@ export default function Home() {
               <p>I connect user needs, system constraints, and engineering realities—so the result works beyond the prototype.</p>
               <div className="approach-hairline-panel">
                 <div className="approach-hairline-caption"><span>Systems in motion</span><span>Move across the map</span></div>
-                <Hub className="approach-hairline-figure" intensity={0.72} theme="auto" label="Interactive isometric map of connected product system components" play tabIndex={0} />
+                <Hub className="approach-hairline-figure" intensity={1} theme="auto" label="Interactive isometric map of connected product system components" play tabIndex={0} />
               </div>
             </div>
             <div className="approach-steps">
@@ -327,27 +302,26 @@ export default function Home() {
             <div className="project-list" aria-live="polite">
               {visibleProjects.map((project, index) => (
                 <article className={`project-row${index % 2 === 1 ? " project-row-reverse" : ""}${index === 0 ? " project-featured" : ""}`} key={project.id} data-reveal>
-                  <Link className="project-image-link" href={`/projects/${project.id}`} aria-label={`View ${project.title} case study`}>
+                  <div className="project-image-link" aria-hidden="true">
                     <Image
                       src={project.image}
-                      alt={project.imageNames?.[0] ?? `${project.title} interface`}
+                      alt=""
                       fill
                       sizes="(max-width: 760px) 100vw, 56vw"
                       priority={index === 0}
                       className="project-image"
                     />
                     <span className="project-image-index" aria-hidden="true">0{index + 1} <span>/ 0{visibleProjects.length}</span></span>
-                    <span className="image-open" aria-hidden="true">↗</span>
-                  </Link>
+                  </div>
                   <div className="project-copy">
                     <p className="project-category">{project.category} <span aria-hidden="true">·</span> {project.subtitle}</p>
-                    <h3><Link href={`/projects/${project.id}`}>{project.title}</Link></h3>
+                    <h3>{project.title}</h3>
                     <p className="project-description">{project.description}</p>
                     <div className="project-outcome"><span>Outcome</span><p>{project.results}</p></div>
                     <ul className="project-tags" aria-label={`${project.title} focus areas`}>
                       {project.tags.slice(0, 3).map((tag) => <li key={tag}>{tag}</li>)}
                     </ul>
-                    <Link className="text-link" href={`/projects/${project.id}`}>Read case study <span aria-hidden="true">↗</span></Link>
+                    <Link className="text-link" href={`/projects/${project.id}`}>Read case study <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" /></svg></Link>
                   </div>
                 </article>
               ))}
@@ -395,7 +369,7 @@ export default function Home() {
             <aside className="contact-card glass-surface" data-reveal aria-label="Contact and social profiles">
               <div className="contact-card-heading"><span className="contact-card-mark"><Image src="/images/allwin-cutout.png" alt="" fill sizes="40px" className="contact-card-avatar" /></span><div><strong>Allwin Alex</strong><span>Product design · Chennai</span></div></div>
               <h3>Let’s start a conversation.</h3>
-              <a className="contact-card-email" href="mailto:allwin110@live.in">allwin110@live.in <span aria-hidden="true">↗</span></a>
+              <a className="contact-card-email" href="mailto:allwin110@live.in">allwin110@live.in <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" /></svg></a>
               <div className="contact-networks">
                 <h4>Elsewhere</h4>
                 <ul>
@@ -412,8 +386,9 @@ export default function Home() {
       <footer className="site-footer page-width">
         <Link className="wordmark" href="#home">Allwin Alex<span aria-hidden="true">.</span></Link>
         <p>© {new Date().getFullYear()} Allwin Alex <span aria-hidden="true">·</span> Product design, Chennai</p>
-        <a href="#home">Back to top ↑</a>
+        <span className="footer-note">Designed for clarity, built with care.</span>
       </footer>
+      <a className="back-to-top-fab" href="#home" aria-label="Back to top" title="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5m0 0 6 6m-6-6-6 6" /></svg></a>
     </div>
   );
 }
