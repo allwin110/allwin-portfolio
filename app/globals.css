@@ -4253,6 +4253,8 @@ html:not([data-theme="dark"]) .hero {
   pointer-events: none;
 }
 
+.hero-project-thread { display: none; }
+
 .hero-project-card {
   position: absolute;
   display: grid;
