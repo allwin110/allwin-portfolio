@@ -97,10 +97,14 @@ export default function Home() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!("IntersectionObserver" in window)) return;
 
-    const revealItems = document.querySelectorAll<HTMLElement>("[data-reveal]");
-    if (revealItems.length === 0) return;
-
     document.documentElement.classList.add("motion-ready");
+    return () => document.documentElement.classList.remove("motion-ready");
+  }, []);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!("IntersectionObserver" in window)) return;
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
@@ -109,12 +113,9 @@ export default function Home() {
       });
     }, { threshold: 0.12, rootMargin: "0px 0px -36px 0px" });
 
-    revealItems.forEach((item) => observer.observe(item));
-    return () => {
-      observer.disconnect();
-      document.documentElement.classList.remove("motion-ready");
-    };
-  }, []);
+    document.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-visible)").forEach((item) => observer.observe(item));
+    return () => observer.disconnect();
+  }, [activeCategory]);
 
   const visibleProjects = activeCategory === "All"
     ? projectsData
@@ -125,7 +126,7 @@ export default function Home() {
   return (
     <div className="portfolio-shell" data-theme={theme}>
       <PortfolioCursor />
-      <a className="skip-link" href="#about">Skip to main content</a>
+      <a className="skip-link" href="#main-content">Skip to main content</a>
       <header className="site-header glass-surface">
         <Link className="wordmark" href="#home" onClick={closeMenu}>
           Allwin Alex<span aria-hidden="true">.</span>
@@ -213,6 +214,26 @@ export default function Home() {
                 sizes="(max-width: 700px) 96vw, 48vw"
                 className="hero-photo"
               />
+              <div className="hero-project-cards" role="group" aria-label="Featured case studies">
+                {projectsData.slice(0, 3).map((project, index) => (
+                  <Link
+                    className={`hero-project-card hero-project-card-${index + 1}`}
+                    href={`/projects/${project.id}`}
+                    key={project.id}
+                    aria-label={`View ${project.title} case study`}
+                  >
+                    <span className="hero-project-thread" aria-hidden="true" />
+                    <span className="hero-project-thumb">
+                      <Image src={project.image} alt="" fill sizes="56px" />
+                    </span>
+                    <span className="hero-project-copy">
+                      <span>{project.category}</span>
+                      <strong>{project.title}</strong>
+                    </span>
+                    <svg className="hero-project-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                  </Link>
+                ))}
+              </div>
               <div className="hero-orbit-label glass-surface" aria-hidden="true">
                 <span className="orbit-label-mark">A.</span>
                 <span><strong>Product design</strong><small>Cloud · SaaS · AI</small></span>
