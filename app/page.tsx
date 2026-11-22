@@ -1,12 +1,11 @@
 'use client';
 
-import { startTransition, useEffect, useRef, useState } from "react";
+import { startTransition, useEffect, useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { projectsData } from "./data/projects";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { PortfolioCursor } from "@/components/portfolio-cursor";
-import { Hub } from "@lucasmarkes/hairline/react";
 
 const experienceTimeline = [
   {
@@ -66,6 +65,8 @@ export default function Home() {
   const [theme, setTheme] = useState<"dark" | "light">("light");
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [flippedProjectOverrides, setFlippedProjectOverrides] = useState<Record<string, boolean>>({});
+  const [hoveredProjectId, setHoveredProjectId] = useState<string | null>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -183,7 +184,7 @@ export default function Home() {
         <section className="hero" id="home" aria-labelledby="hero-title">
           <div className="hero-layout page-width">
             <div className="hero-copy" data-reveal>
-              <p className="hero-role"><span className="role-dot" aria-hidden="true" /> Allwin Alex <span aria-hidden="true">·</span> Senior product designer</p>
+              <p className="hero-role"><span className="role-dot" aria-hidden="true" /> <span>Allwin Alex</span><span aria-hidden="true">·</span><span>Senior product designer</span></p>
               <h1 id="hero-title">Complex systems.<br /><span>Clear decisions.</span></h1>
               <p className="hero-statement">I design cloud, SaaS, and AI products that help people make confident decisions.</p>
               <div className="hero-actions">
@@ -201,9 +202,14 @@ export default function Home() {
               event.currentTarget.style.setProperty("--pointer-y", "0");
             }}>
               <div className="hero-glow" aria-hidden="true" />
+              <div className="hero-portrait-backdrop" aria-hidden="true">
+                <span className="portrait-orbit portrait-orbit-one" />
+                <span className="portrait-orbit portrait-orbit-two" />
+                <span className="portrait-grid" />
+              </div>
               <Image
-                src={theme === "dark" ? "/images/allwin-hero-dark.webp" : "/images/allwin-hero-light.webp"}
-                alt={theme === "dark" ? "Allwin Alex in a black suit against a dark studio background." : "Allwin Alex in a blue blazer against a charcoal background."}
+                src={theme === "dark" ? "/images/allwin-hero-dark-cutout.png" : "/images/allwin-hero-light-cutout.png"}
+                alt={theme === "dark" ? "Allwin Alex in a black suit, monochrome portrait." : "Allwin Alex in a blue blazer and white shirt."}
                 fill
                 priority
                 sizes="(max-width: 700px) 96vw, 48vw"
@@ -252,9 +258,54 @@ export default function Home() {
               <p className="section-kicker">How I work</p>
               <h2 id="approach-title">Good design starts before the interface.</h2>
               <p>I connect user needs, system constraints, and engineering realities—so the result works beyond the prototype.</p>
-              <div className="approach-hairline-panel">
-                <div className="approach-hairline-caption"><span>Systems in motion</span><span>Move across the map</span></div>
-                <Hub className="approach-hairline-figure" intensity={1} theme="auto" label="Interactive isometric map of connected product system components" play tabIndex={0} />
+              <div className="systems-map-panel">
+                <div className="approach-hairline-caption"><span>Systems in motion</span><span>From insight to impact</span></div>
+                <svg className="systems-route-map" viewBox="0 0 560 320" role="img" aria-labelledby="systems-map-title systems-map-description">
+                  <title id="systems-map-title">A living map of the design process</title>
+                  <desc id="systems-map-description">Three illuminated stages connect research, system design, and prototyping on a dimensional map.</desc>
+                  <defs>
+                    <linearGradient id="route-light" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0" stopColor="#7bdcff" />
+                      <stop offset=".52" stopColor="#9b9aff" />
+                      <stop offset="1" stopColor="#ffb8e2" />
+                    </linearGradient>
+                    <filter id="route-glow" x="-60%" y="-60%" width="220%" height="220%">
+                      <feGaussianBlur stdDeviation="4" result="softGlow" />
+                      <feMerge><feMergeNode in="softGlow" /><feMergeNode in="SourceGraphic" /></feMerge>
+                    </filter>
+                  </defs>
+                  <path className="systems-map-plane" d="M280 24 535 160 280 296 25 160Z" />
+                  <g className="systems-map-grid" aria-hidden="true">
+                    <path d="M52 175 280 53 508 175M78 189 280 81 482 189M105 203 280 109 455 203M132 217 280 137 428 217M159 231 280 165 401 231M186 245 280 193 374 245" />
+                    <path d="m72 135 228 121m-175-149 228 121m-175-149 228 121m-175-149 228 121M488 135 260 256m175-149L207 228m175-149L154 200m175-149L101 172m175-149L48 144" />
+                  </g>
+                  <path className="systems-route-base" d="M119 177 280 91 441 177" />
+                  <path className="systems-route-flow" d="M119 177 280 91 441 177" />
+                  <g className="systems-route-node node-research" transform="translate(119 177)">
+                    <path className="node-face node-left" d="m0-34 39 21v25L0 34-39 12v-25Z" />
+                    <path className="node-face node-top" d="m0-34 39 21L0 9-39-13Z" />
+                    <path className="node-outline" d="m0-24 28 15L0 7-28-9Z" />
+                    <circle className="node-light" cy="-9" r="5" />
+                    <text x="0" y="57" textAnchor="middle">01 / DISCOVER</text>
+                  </g>
+                  <g className="systems-route-node node-shape" transform="translate(280 91)">
+                    <path className="node-face node-left" d="m0-34 39 21v25L0 34-39 12v-25Z" />
+                    <path className="node-face node-top" d="m0-34 39 21L0 9-39-13Z" />
+                    <path className="node-outline" d="m0-24 28 15L0 7-28-9Z" />
+                    <circle className="node-light" cy="-9" r="5" />
+                    <text x="0" y="57" textAnchor="middle">02 / SHAPE</text>
+                  </g>
+                  <g className="systems-route-node node-prove" transform="translate(441 177)">
+                    <path className="node-face node-left" d="m0-34 39 21v25L0 34-39 12v-25Z" />
+                    <path className="node-face node-top" d="m0-34 39 21L0 9-39-13Z" />
+                    <path className="node-outline" d="m0-24 28 15L0 7-28-9Z" />
+                    <circle className="node-light" cy="-9" r="5" />
+                    <text x="0" y="57" textAnchor="middle">03 / PROVE</text>
+                  </g>
+                  <circle className="systems-route-pulse" r="5">
+                    <animateMotion dur="5s" repeatCount="indefinite" path="M119 177 280 91 441 177" />
+                  </circle>
+                </svg>
               </div>
             </div>
             <div className="approach-steps">
@@ -300,31 +351,79 @@ export default function Home() {
             </div>
 
             <div className="project-list" aria-live="polite">
-              {visibleProjects.map((project, index) => (
-                <article className={`project-row${index % 2 === 1 ? " project-row-reverse" : ""}${index === 0 ? " project-featured" : ""}`} key={project.id} data-reveal>
-                  <div className="project-image-link" aria-hidden="true">
-                    <Image
-                      src={project.image}
-                      alt=""
-                      fill
-                      sizes="(max-width: 760px) 100vw, 56vw"
-                      priority={index === 0}
-                      className="project-image"
-                    />
-                    <span className="project-image-index" aria-hidden="true">0{index + 1} <span>/ 0{visibleProjects.length}</span></span>
-                  </div>
-                  <div className="project-copy">
-                    <p className="project-category">{project.category} <span aria-hidden="true">·</span> {project.subtitle}</p>
-                    <h3>{project.title}</h3>
-                    <p className="project-description">{project.description}</p>
-                    <div className="project-outcome"><span>Outcome</span><p>{project.results}</p></div>
-                    <ul className="project-tags" aria-label={`${project.title} focus areas`}>
-                      {project.tags.slice(0, 3).map((tag) => <li key={tag}>{tag}</li>)}
-                    </ul>
-                    <Link className="text-link" href={`/projects/${project.id}`}>Read case study <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" /></svg></Link>
+              <svg className="project-hanging-rail" style={{ "--mobile-rail-width": `calc(${visibleProjects.length * 84}vw + ${Math.max(0, visibleProjects.length - 1) * 15}px)` } as CSSProperties} viewBox="0 0 1000 116" preserveAspectRatio="none" aria-hidden="true">
+                <defs><linearGradient id="hanging-wire-gradient" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#7899c8" stopOpacity=".5" /><stop offset=".5" stopColor="#9f91cf" /><stop offset="1" stopColor="#7899c8" stopOpacity=".5" /></linearGradient></defs>
+                <path d="M0 18 Q500 116 1000 18" />
+              </svg>
+              {visibleProjects.map((project, index) => {
+                const hasFlipOverride = Object.prototype.hasOwnProperty.call(flippedProjectOverrides, project.id);
+                const isProjectFlipped = flippedProjectOverrides[project.id] ?? hoveredProjectId === project.id;
+                return (
+                <article
+                  className="project-row"
+                  key={project.id}
+                  data-reveal
+                  data-flipped={isProjectFlipped}
+                  data-flip-manual={hasFlipOverride}
+                  onPointerEnter={(event) => { if (event.pointerType === "mouse") setHoveredProjectId(project.id); }}
+                  onPointerMove={(event) => {
+                    if (event.pointerType !== "mouse" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+                    const bounds = event.currentTarget.getBoundingClientRect();
+                    const x = Math.max(-1, Math.min(1, ((event.clientX - bounds.left) / bounds.width - 0.5) * 2));
+                    const y = Math.max(-1, Math.min(1, ((event.clientY - bounds.top) / bounds.height - 0.5) * 2));
+                    event.currentTarget.style.setProperty("--card-rotate-x", `${y * -7}deg`);
+                    event.currentTarget.style.setProperty("--card-rotate-y", `${x * 8}deg`);
+                    event.currentTarget.style.setProperty("--card-glow-x", `${(x + 1) * 50}%`);
+                    event.currentTarget.style.setProperty("--card-glow-y", `${(y + 1) * 50}%`);
+                    event.currentTarget.style.setProperty("--card-glow-hue", `${198 + ((x + 1) / 2) * 82}`);
+                  }}
+                  onPointerLeave={(event) => {
+                    setHoveredProjectId((current) => current === project.id ? null : current);
+                    event.currentTarget.style.setProperty("--card-rotate-x", "0deg");
+                    event.currentTarget.style.setProperty("--card-rotate-y", "0deg");
+                    event.currentTarget.style.setProperty("--card-glow-x", "50%");
+                    event.currentTarget.style.setProperty("--card-glow-y", "45%");
+                    event.currentTarget.style.setProperty("--card-glow-hue", "218");
+                  }}
+                >
+                  <span className="project-card-sheen" aria-hidden="true" />
+                  <button className="project-flip-toggle" type="button" aria-pressed={isProjectFlipped} aria-label={isProjectFlipped ? `Show ${project.title} overview` : `Show ${project.title} objective`} onClick={() => setFlippedProjectOverrides((current) => ({ ...current, [project.id]: !isProjectFlipped }))}>
+                    {isProjectFlipped ? "Overview" : "Objective"}
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14-5L4 8m0 0V4m0 4h4M4 13a8 8 0 0 0 14 5l2-2m0 0v4m0-4h-4" /></svg>
+                  </button>
+                  <div className="project-card-flipper">
+                    <div className="project-card-face project-card-front" inert={isProjectFlipped} aria-hidden={isProjectFlipped}>
+                      <div className="project-card-image" aria-hidden="true">
+                        <Image
+                          src={project.image}
+                          alt=""
+                          fill
+                          sizes="(max-width: 760px) 84vw, 25vw"
+                          priority={index === 0}
+                          className="project-image"
+                        />
+                        <span className="project-image-index" aria-hidden="true">0{index + 1} <span>/ 0{visibleProjects.length}</span></span>
+                      </div>
+                      <div className="project-copy">
+                        <p className="project-category">{project.category} <span aria-hidden="true">·</span> {project.subtitle}</p>
+                        <h3>{project.title}</h3>
+                        <p className="project-description">{project.description}</p>
+                        <ul className="project-tags" aria-label={`${project.title} focus areas`}>
+                          {project.tags.slice(0, 2).map((tag) => <li key={tag}>{tag}</li>)}
+                        </ul>
+                        <Link className="text-link" href={`/projects/${project.id}`} aria-label={`Read ${project.title} case study`}>Read case study <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" /></svg></Link>
+                      </div>
+                    </div>
+                    <div className="project-card-face project-card-back" inert={!isProjectFlipped} aria-hidden={!isProjectFlipped}>
+                      <p className="project-back-eyebrow">Project objective <span aria-hidden="true">/ 0{index + 1}</span></p>
+                      <h3>{project.title}</h3>
+                      <p className="project-objective">{project.challenge}</p>
+                      <div className="project-outcome"><span>Outcome</span><p>{project.results}</p></div>
+                    </div>
                   </div>
                 </article>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
@@ -392,3 +491,4 @@ export default function Home() {
     </div>
   );
 }
+
