@@ -11,6 +11,7 @@ const experienceTimeline = [
   {
     role: "UX Lead Designer",
     company: "Aziro Technologies Pvt. Ltd.",
+    logo: "/images/companies/aziro.png",
     location: "Chennai, India",
     period: "Nov 2023 – Present",
     highlights: [
@@ -22,6 +23,7 @@ const experienceTimeline = [
   {
     role: "Senior Product Designer",
     company: "Swirepay Technologies",
+    logo: "/images/companies/swirepay.png",
     location: "Chennai, India",
     period: "Apr 2023 – Nov 2023",
     highlights: [
@@ -32,6 +34,7 @@ const experienceTimeline = [
   {
     role: "Senior Business Presentation Designer",
     company: "McKinsey & Company",
+    logo: "/images/companies/mckinsey.png",
     location: "Chennai, India",
     period: "Apr 2016 – Mar 2023",
     highlights: [
@@ -42,6 +45,7 @@ const experienceTimeline = [
   {
     role: "Senior Customer Service Agent",
     company: "Jet Airways",
+    logo: "/images/companies/jet-airways.png",
     location: "Chennai, India",
     period: "Nov 2013 – Apr 2016",
     highlights: [
@@ -207,7 +211,7 @@ export default function Home() {
                 <span className="portrait-orbit portrait-orbit-two" />
                 <span className="portrait-grid" />
               </div>
-              <Image
+                  <Image
                 src={theme === "dark" ? "/images/allwin-hero-dark-cutout.png" : "/images/allwin-hero-light-cutout.png"}
                 alt={theme === "dark" ? "Allwin Alex in a black suit, monochrome portrait." : "Allwin Alex in a blue blazer and white shirt."}
                 fill
@@ -351,17 +355,20 @@ export default function Home() {
             </div>
 
             <div className="project-list" aria-live="polite">
-              <svg className="project-hanging-rail" style={{ "--mobile-rail-width": `calc(${visibleProjects.length * 84}vw + ${Math.max(0, visibleProjects.length - 1) * 15}px)` } as CSSProperties} viewBox="0 0 1000 116" preserveAspectRatio="none" aria-hidden="true">
+              <svg className="project-hanging-rail" viewBox="0 0 1000 180" preserveAspectRatio="none" aria-hidden="true">
                 <defs><linearGradient id="hanging-wire-gradient" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#7899c8" stopOpacity=".5" /><stop offset=".5" stopColor="#9f91cf" /><stop offset="1" stopColor="#7899c8" stopOpacity=".5" /></linearGradient></defs>
-                <path d="M0 18 Q500 116 1000 18" />
+                <path d="M0 8 Q500 180 1000 8" />
               </svg>
               {visibleProjects.map((project, index) => {
                 const hasFlipOverride = Object.prototype.hasOwnProperty.call(flippedProjectOverrides, project.id);
                 const isProjectFlipped = flippedProjectOverrides[project.id] ?? hoveredProjectId === project.id;
+                const ropePosition = (index + 0.5) / visibleProjects.length;
+                const ropeDrop = 48 * 4 * ropePosition * (1 - ropePosition);
                 return (
                 <article
                   className="project-row"
                   key={project.id}
+                  style={{ "--rope-drop": `${ropeDrop}px` } as CSSProperties}
                   data-reveal
                   data-flipped={isProjectFlipped}
                   data-flip-manual={hasFlipOverride}
@@ -386,12 +393,13 @@ export default function Home() {
                     event.currentTarget.style.setProperty("--card-glow-hue", "218");
                   }}
                 >
-                  <span className="project-card-sheen" aria-hidden="true" />
-                  <button className="project-flip-toggle" type="button" aria-pressed={isProjectFlipped} aria-label={isProjectFlipped ? `Show ${project.title} overview` : `Show ${project.title} objective`} onClick={() => setFlippedProjectOverrides((current) => ({ ...current, [project.id]: !isProjectFlipped }))}>
-                    {isProjectFlipped ? "Overview" : "Objective"}
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14-5L4 8m0 0V4m0 4h4M4 13a8 8 0 0 0 14 5l2-2m0 0v4m0-4h-4" /></svg>
-                  </button>
-                  <div className="project-card-flipper">
+                  <div className="project-card-shell">
+                    <span className="project-card-sheen" aria-hidden="true" />
+                    <button className="project-flip-toggle" type="button" aria-pressed={isProjectFlipped} aria-label={isProjectFlipped ? `Show ${project.title} overview` : `Show ${project.title} objective`} onClick={() => setFlippedProjectOverrides((current) => ({ ...current, [project.id]: !isProjectFlipped }))}>
+                      {isProjectFlipped ? "Overview" : "Objective"}
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14-5L4 8m0 0V4m0 4h4M4 13a8 8 0 0 0 14 5l2-2m0 0v4m0-4h-4" /></svg>
+                    </button>
+                    <div className="project-card-flipper">
                     <div className="project-card-face project-card-front" inert={isProjectFlipped} aria-hidden={isProjectFlipped}>
                       <div className="project-card-image" aria-hidden="true">
                         <Image
@@ -420,6 +428,7 @@ export default function Home() {
                       <p className="project-objective">{project.challenge}</p>
                       <div className="project-outcome"><span>Outcome</span><p>{project.results}</p></div>
                     </div>
+                    </div>
                   </div>
                 </article>
                 );
@@ -444,7 +453,10 @@ export default function Home() {
                 </div>
                 <div className="experience-detail">
                   <h3>{job.role}</h3>
-                  <p className="experience-company">{job.company}</p>
+                  <div className="experience-company-line">
+                    <p className="experience-company">{job.company}</p>
+                    <Image src={job.logo} alt="" width={120} height={44} className="experience-company-logo" />
+                  </div>
                   <ul>
                     {job.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}
                   </ul>
