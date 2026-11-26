@@ -5325,6 +5325,22 @@ html[data-theme="dark"] .experience-company-logo { filter: brightness(0) invert(
   transform: rotateY(0deg) !important;
   transition: transform 760ms cubic-bezier(.2,.72,.25,1);
 }
+.project-card-deep-dive {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  color: inherit;
+  text-decoration: none;
+}
+.project-card-deep-dive:focus-visible {
+  border-radius: 12px;
+  outline: 3px solid #4778bd;
+  outline-offset: 4px;
+}
+.project-deep-dive-link { width: fit-content; }
 .project-row[data-flipped="true"] .project-card-flipper {
   transform: rotateY(180deg) !important;
 }

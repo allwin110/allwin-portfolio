@@ -398,6 +398,7 @@ export default function Home() {
                     </button>
                     <div className="project-card-flipper">
                     <div className="project-card-face project-card-front" inert={isProjectFlipped} aria-hidden={isProjectFlipped}>
+                      <Link className="project-card-deep-dive" href={`/projects/${project.id}`} aria-label={`Open ${project.title} case study`}>
                       <div className="project-card-image" aria-hidden="true">
                         <Image
                           src={project.image}
@@ -416,14 +417,15 @@ export default function Home() {
                         <ul className="project-tags" aria-label={`${project.title} focus areas`}>
                           {project.tags.slice(0, 2).map((tag) => <li key={tag}>{tag}</li>)}
                         </ul>
-                        <Link className="text-link" href={`/projects/${project.id}`} aria-label={`Read ${project.title} case study`}>Read case study <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" /></svg></Link>
                       </div>
+                      </Link>
                     </div>
                     <div className="project-card-face project-card-back" inert={!isProjectFlipped} aria-hidden={!isProjectFlipped}>
                       <p className="project-back-eyebrow">Project objective <span aria-hidden="true">/ 0{index + 1}</span></p>
                       <h3>{project.title}</h3>
                       <p className="project-objective">{project.challenge}</p>
                       <div className="project-outcome"><span>Outcome</span><p>{project.results}</p></div>
+                      <Link className="text-link project-deep-dive-link" href={`/projects/${project.id}`} aria-label={`Explore the ${project.title} deep dive`}>Explore the deep dive <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" /></svg></Link>
                     </div>
                     </div>
                   </div>
