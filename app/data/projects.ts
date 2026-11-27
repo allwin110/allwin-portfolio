@@ -148,3 +148,4 @@ export const projectsData: Project[] = [
     githubUrl: "https://linkedin.com/in/allwin"
   }
 ];
+
