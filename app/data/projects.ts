@@ -4,8 +4,11 @@ export interface Project {
   subtitle: string;
   category: string;
   description: string;
+  contextTitle: string;
+  context: string;
   challenge: string;
   solution: string;
+  designWork: string[];
   results: string;
   image: string;
   images?: string[];
@@ -21,10 +24,17 @@ export const projectsData: Project[] = [
     title: "Cloud Orchestration Platform",
     subtitle: "Enterprise Infrastructure Console",
     category: "Enterprise UX",
-    description: "End-to-end UX design for enterprise cloud orchestration and infrastructure administration platforms.",
-    challenge: "Operations teams faced massive, error-prone complexity provisioning multi-cloud services, validating role-based access controls (RBAC), and monitoring real-time active deployment states.",
-    solution: "Simplified complex deployment setups and RBAC monitoring controls into a clean unified dashboard. Engineered accessible navigation paradigms and interactive, implementation-aware visual flows.",
-    results: "Received exceptional usability audit scores for operational workflow clarity and infrastructure management experience.",
+    description: "A shared workspace for cloud environments, deployment activity, and infrastructure operations.",
+    contextTitle: "Operators need one view of a moving system.",
+    context: "Operations teams needed to manage environments, solutions, and deployments from one enterprise console.",
+    challenge: "Provisioning, role permissions, and deployment states were difficult to follow across dense operational flows.",
+    solution: "I designed the workspace overview and supporting flows to make system status and the next action easier to find.",
+    designWork: [
+      "Mapped the operator journey across setup, access, and deployment monitoring.",
+      "Grouped environment and pipeline status into a single overview.",
+      "Designed a solution catalogue and clearer role-based access patterns."
+    ],
+    results: "The console brings deployment status, environments, and catalogue access into one operational workspace.",
     image: "/images/cloud-orchestration-dashboard.png",
     images: [
       "/images/cloud-orchestration-dashboard.png",
@@ -43,10 +53,17 @@ export const projectsData: Project[] = [
     title: "AI-Powered Onboarding Platform",
     subtitle: "Aziro Technologies Integration",
     category: "AI & Workflows",
-    description: "Consolidating HR tools into a unified AI-assisted experience that reduced onboarding effort by 50% and improved stakeholder visibility.",
-    challenge: "The onboarding experience was fragmented across email communication, Excel trackers, WhatsApp groups, and manual updates, generating process delays and coordination overhead.",
-    solution: "Consolidated multiple HR and IT coordination channels into a single AI-assisted staging workflow, automating task assignment and real-time visibility.",
-    results: "Manual onboarding effort was reduced by 50%, enabling instant progress tracking through a centralized dashboard.",
+    description: "An AI-assisted onboarding workflow that gives HR and IT a shared view of tasks and progress.",
+    contextTitle: "A new hire journey crosses many teams.",
+    context: "HR and IT teams coordinated new-hire setup across email, spreadsheets, chat, and manual status updates.",
+    challenge: "Ownership and progress were spread across separate tools, making hand-offs and outstanding tasks difficult to follow.",
+    solution: "I designed a unified onboarding workflow that makes ownership, task status, and follow-up visible to the people involved.",
+    designWork: [
+      "Mapped the hand-offs between HR, IT, and the new hire.",
+      "Grouped onboarding tasks by owner and status in a shared workspace.",
+      "Designed dashboard and assistant states to support progress updates."
+    ],
+    results: "HR and IT get one place to assign onboarding work and review progress across the new-hire journey.",
     image: "/images/onboarding-dashboard.png",
     images: [
       "/images/onboarding-dashboard.png",
@@ -69,10 +86,17 @@ export const projectsData: Project[] = [
     title: "Cloud Director Platform Modernization",
     subtitle: "Enterprise Infrastructure Framework",
     category: "SaaS UX",
-    description: "Unifying enterprise infrastructure management through Carbon Design System adoption, workflow simplification, and cross-platform experience standardization.",
-    challenge: "Each of three legacy applications followed inconsistent visual conventions, navigation patterns, and visual components, creating high cognitive load and design debt.",
-    solution: "Migrated the platform ecosystem to a standardized Carbon Design System-based framework and unified navigation and interaction models.",
-    results: "Redesign successfully reduced administrative setup and task completion times by approximately 50% and minimized context-switching.",
+    description: "A consistent experience across three enterprise infrastructure applications.",
+    contextTitle: "Three tools had three operating models.",
+    context: "Three legacy applications supported related infrastructure tasks but had grown with separate patterns.",
+    challenge: "People had to relearn navigation and controls when moving between products.",
+    solution: "I aligned the experience around Carbon Design System patterns and a shared navigation model.",
+    designWork: [
+      "Reviewed the three applications to identify repeated tasks and inconsistent patterns.",
+      "Applied shared Carbon components to navigation, forms, and data views.",
+      "Clarified paths for environment setup and infrastructure management."
+    ],
+    results: "Shared patterns make related infrastructure tasks feel more consistent across the product family.",
     image: "/images/cloud-director-dashboard.png",
     images: [
       "/images/cloud-director-dashboard.png",
@@ -95,10 +119,17 @@ export const projectsData: Project[] = [
     title: "Developer Experience",
     subtitle: "Kubernetes & GPU Workloads",
     category: "Enterprise UX",
-    description: "Reimagining enterprise cloud and AI infrastructure management through Carbon Design System principles, operational UX, and scalable workflow architecture.",
-    challenge: "Infrastructure and DevOps teams struggled with highly technical, configuration-heavy provisioning, limited telemetry visibility, and dense admin tables.",
-    solution: "Optimized complex GPU resource allocation andGuided provisioning flows, leveraging Carbon layouts, progressive disclosure, and telemetry visualization.",
-    results: "Drastically reduced RBAC permission confusion and established a highly scalable, developer-aware orchestration visual foundation.",
+    description: "A clearer operations view for Kubernetes clusters, GPU workloads, and infrastructure health.",
+    contextTitle: "Infrastructure teams need signal in the noise.",
+    context: "Infrastructure teams needed to configure clusters and GPU workloads while keeping track of system health.",
+    challenge: "Configuration-heavy flows and dense administration tables made workload and telemetry information difficult to scan.",
+    solution: "I organized provisioning and monitoring around the decisions operators need to make at each stage.",
+    designWork: [
+      "Structured cluster, workload, and resource information into clear groups.",
+      "Used progressive disclosure to make configuration steps easier to follow.",
+      "Designed monitoring views that bring health and utilization signals together."
+    ],
+    results: "Operators can review cluster health, workload status, and resource signals within one operations view.",
     image: "/images/developer-experience-dashboard.png",
     images: [
       "/images/developer-experience-dashboard.png",
