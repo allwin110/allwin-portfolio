@@ -14,10 +14,11 @@ const experienceTimeline = [
     logo: "/images/companies/aziro.png",
     location: "Chennai, India",
     period: "Nov 2023 – Present",
+    summary: "Lead product design across enterprise infrastructure and AI-assisted workflows.",
     highlights: [
-      "Led end-to-end UX for enterprise cloud orchestration and infrastructure administration platforms.",
-      "Simplified provisioning, role-based access, deployment monitoring, and operational workflows.",
-      "Designed an AI-assisted onboarding experience that cut candidate onboarding time by 70%.",
+      "Lead end-to-end UX for cloud orchestration and infrastructure administration.",
+      "Design provisioning, role-based access, deployment monitoring, and operational workflows.",
+      "Designed an AI-assisted onboarding journey around clear task ownership and status visibility.",
     ],
   },
   {
@@ -26,9 +27,11 @@ const experienceTimeline = [
     logo: "/images/companies/swirepay.png",
     location: "Chennai, India",
     period: "Apr 2023 – Nov 2023",
+    summary: "Improve payment and event-booking flows through research and accessible design.",
     highlights: [
-      "Research and usability work reduced transaction completion time by 50%.",
-      "Built a WCAG-compliant design system and designed event seat booking flows that increased retention by 25%.",
+      "Used research and usability testing to identify friction in transaction completion.",
+      "Built a WCAG-compliant design system for consistent product experiences.",
+      "Designed event seat selection and booking flows.",
     ],
   },
   {
@@ -37,9 +40,10 @@ const experienceTimeline = [
     logo: "/images/companies/mckinsey.png",
     location: "Chennai, India",
     period: "Apr 2016 – Mar 2023",
+    summary: "Turn complex information into clear visual systems and useful internal tools.",
     highlights: [
       "Designed an HRIS dashboard for safe office seat booking across regions during COVID.",
-      "Created a global design repository that cut team asset search time by 60%.",
+      "Created a global design repository to make team assets easier to find and reuse.",
     ],
   },
   {
@@ -48,9 +52,11 @@ const experienceTimeline = [
     logo: "/images/companies/jet-airways.png",
     location: "Chennai, India",
     period: "Nov 2013 – Apr 2016",
+    summary: "Build a front-line service perspective on customer and operational experiences.",
     highlights: [
-      "Managed and trained a 20-person service team, improving complaint resolution KPIs by 40%.",
-      "Wrote baggage-service procedures supporting more than 500 issue resolutions each month.",
+      "Managed and trained a 20-person customer service team.",
+      "Wrote baggage-service procedures for recurring operational issues.",
+      "Supported more than 500 baggage-service issue resolutions each month.",
     ],
   },
 ];
@@ -239,92 +245,17 @@ export default function Home() {
 
         <section className="about-section page-width section-space" id="about" tabIndex={-1} aria-labelledby="about-title">
           <div className="about-index" data-reveal>
-            <p className="section-kicker">A little context</p>
+            <p className="section-kicker">How I work</p>
             <span className="about-index-number" aria-hidden="true">01</span>
           </div>
-          <div className="about-content" data-reveal>
-            <h2 id="about-title">I work where complex systems meet real people.</h2>
-            <div className="about-bottom">
-              <p className="about-primary">With more than nine years across product design and service operations, I turn dense workflows into clear, confident experiences.</p>
-              <ul className="focus-list" aria-label="Areas of focus">
-                <li>Cloud & infrastructure</li>
-                <li>AI-assisted workflows</li>
-                <li>Design systems & accessibility</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section className="approach-section" aria-labelledby="approach-title">
-          <div className="approach-inner page-width">
-            <div className="approach-intro" data-reveal>
-              <p className="section-kicker">How I work</p>
-              <h2 id="approach-title">Good design starts before the interface.</h2>
-              <p>I connect user needs, system constraints, and engineering realities—so the result works beyond the prototype.</p>
-              <div className="systems-map-panel">
-                <div className="approach-hairline-caption"><span>Systems in motion</span><span>From insight to impact</span></div>
-                <svg className="systems-route-map" viewBox="0 0 560 320" role="img" aria-labelledby="systems-map-title systems-map-description">
-                  <title id="systems-map-title">A living map of the design process</title>
-                  <desc id="systems-map-description">Three illuminated stages connect research, system design, and prototyping on a dimensional map.</desc>
-                  <defs>
-                    <linearGradient id="route-light" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0" stopColor="#7bdcff" />
-                      <stop offset=".52" stopColor="#9b9aff" />
-                      <stop offset="1" stopColor="#ffb8e2" />
-                    </linearGradient>
-                    <filter id="route-glow" x="-60%" y="-60%" width="220%" height="220%">
-                      <feGaussianBlur stdDeviation="4" result="softGlow" />
-                      <feMerge><feMergeNode in="softGlow" /><feMergeNode in="SourceGraphic" /></feMerge>
-                    </filter>
-                  </defs>
-                  <path className="systems-map-plane" d="M280 24 535 160 280 296 25 160Z" />
-                  <g className="systems-map-grid" aria-hidden="true">
-                    <path d="M52 175 280 53 508 175M78 189 280 81 482 189M105 203 280 109 455 203M132 217 280 137 428 217M159 231 280 165 401 231M186 245 280 193 374 245" />
-                    <path d="m72 135 228 121m-175-149 228 121m-175-149 228 121m-175-149 228 121M488 135 260 256m175-149L207 228m175-149L154 200m175-149L101 172m175-149L48 144" />
-                  </g>
-                  <path className="systems-route-base" d="M119 177 280 91 441 177" />
-                  <path className="systems-route-flow" d="M119 177 280 91 441 177" />
-                  <g className="systems-route-node node-research" transform="translate(119 177)">
-                    <path className="node-face node-left" d="m0-34 39 21v25L0 34-39 12v-25Z" />
-                    <path className="node-face node-top" d="m0-34 39 21L0 9-39-13Z" />
-                    <path className="node-outline" d="m0-24 28 15L0 7-28-9Z" />
-                    <circle className="node-light" cy="-9" r="5" />
-                    <text x="0" y="57" textAnchor="middle">01 / DISCOVER</text>
-                  </g>
-                  <g className="systems-route-node node-shape" transform="translate(280 91)">
-                    <path className="node-face node-left" d="m0-34 39 21v25L0 34-39 12v-25Z" />
-                    <path className="node-face node-top" d="m0-34 39 21L0 9-39-13Z" />
-                    <path className="node-outline" d="m0-24 28 15L0 7-28-9Z" />
-                    <circle className="node-light" cy="-9" r="5" />
-                    <text x="0" y="57" textAnchor="middle">02 / SHAPE</text>
-                  </g>
-                  <g className="systems-route-node node-prove" transform="translate(441 177)">
-                    <path className="node-face node-left" d="m0-34 39 21v25L0 34-39 12v-25Z" />
-                    <path className="node-face node-top" d="m0-34 39 21L0 9-39-13Z" />
-                    <path className="node-outline" d="m0-24 28 15L0 7-28-9Z" />
-                    <circle className="node-light" cy="-9" r="5" />
-                    <text x="0" y="57" textAnchor="middle">03 / PROVE</text>
-                  </g>
-                  <circle className="systems-route-pulse" r="5">
-                    <animateMotion dur="5s" repeatCount="indefinite" path="M119 177 280 91 441 177" />
-                  </circle>
-                </svg>
-              </div>
-            </div>
-            <div className="approach-steps">
-              <article className="approach-step" data-reveal>
-                <span className="approach-node" aria-hidden="true">01</span>
-                <div><h3>Find the real problem</h3><p>Map the people, decisions, and constraints behind a workflow.</p></div>
-              </article>
-              <article className="approach-step" data-reveal>
-                <span className="approach-node" aria-hidden="true">02</span>
-                <div><h3>Shape the system</h3><p>Make information, roles, and next steps feel clear and connected.</p></div>
-              </article>
-              <article className="approach-step" data-reveal>
-                <span className="approach-node" aria-hidden="true">03</span>
-                <div><h3>Prove it in context</h3><p>Prototype, test, and work with engineering toward a buildable answer.</p></div>
-              </article>
-            </div>
+          <div className="about-content method-content" data-reveal>
+            <h2 id="about-title">Make complex operations easier to understand.</h2>
+            <p className="about-primary method-lead">From service operations to enterprise software, I stay close to the people, decisions, and system rules behind each workflow.</p>
+            <ol className="method-list" aria-label="My design process">
+              <li data-reveal><span>Understand</span><p>Learn who is involved, what they need to decide, and where the process breaks.</p></li>
+              <li data-reveal><span>Structure</span><p>Make roles, states, and next steps easier to see across the product.</p></li>
+              <li data-reveal><span>Validate</span><p>Prototype key flows, test them in context, and shape a buildable direction with engineering.</p></li>
+            </ol>
           </div>
         </section>
 
@@ -333,8 +264,8 @@ export default function Home() {
             <div className="work-heading" data-reveal>
               <div>
                 <p className="section-kicker">Selected work <span aria-hidden="true">/ 04 case studies</span></p>
-                <h2 id="work-title">Built for the moments that matter.</h2>
-                <p className="section-description">A closer look at the systems, workflows, and decisions behind each product.</p>
+                <h2 id="work-title">The work, in practice.</h2>
+                <p className="section-description">Four projects shaped by the people who use them and the systems they rely on.</p>
               </div>
               <div className="work-filters glass-surface" role="group" aria-label="Filter projects by category">
                 {categories.map((category) => (
@@ -369,9 +300,13 @@ export default function Home() {
                   style={{ "--rope-drop": `${ropeDrop}px` } as CSSProperties}
                   data-reveal
                   data-flipped={isProjectFlipped}
+                  onPointerEnter={(event) => {
+                    if (event.pointerType === "mouse" && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                      setActiveFlippedProjectId(project.id);
+                    }
+                  }}
                   onPointerMove={(event) => {
                     if (event.pointerType !== "mouse" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-                    setActiveFlippedProjectId(project.id);
                     const bounds = event.currentTarget.getBoundingClientRect();
                     const x = Math.max(-1, Math.min(1, ((event.clientX - bounds.left) / bounds.width - 0.5) * 2));
                     const y = Math.max(-1, Math.min(1, ((event.clientY - bounds.top) / bounds.height - 0.5) * 2));
@@ -444,14 +379,16 @@ export default function Home() {
             <p className="section-description">From customer operations to leading product design for enterprise software.</p>
           </div>
           <div className="experience-list">
-            {experienceTimeline.map((job) => (
-              <article className="experience-item" key={job.company} data-reveal>
+            {experienceTimeline.map((job, index) => (
+              <article className="experience-item" key={job.company} data-reveal style={{ "--career-index": index } as CSSProperties}>
+                <span className="experience-step" aria-hidden="true">0{index + 1}<span> / 0{experienceTimeline.length}</span></span>
                 <div className="experience-meta">
                   <p>{job.period}</p>
                   <p>{job.location}</p>
                 </div>
                 <div className="experience-detail">
                   <h3>{job.role}</h3>
+                  <p className="experience-summary">{job.summary}</p>
                   <div className="experience-company-line">
                     <p className="experience-company">{job.company}</p>
                     <Image src={job.logo} alt="" width={120} height={44} className="experience-company-logo" />
