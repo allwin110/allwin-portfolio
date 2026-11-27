@@ -83,19 +83,18 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
         </section>
 
         <section className="story-brief" id="the-brief" aria-labelledby="brief-title">
-          <div className="story-chapter-label"><span>01 / THE BRIEF</span><i aria-hidden="true">↘</i></div>
-          <div className="story-brief-body"><p className="story-overline">Start with the people and the system</p><h2 id="brief-title">A complex system should still feel understandable.</h2><p>{project.description}</p><ul className="story-tags" aria-label="Project focus areas">{project.tags.slice(0, 4).map((tag) => <li key={tag}>{tag}</li>)}</ul></div>
+          <div className="story-chapter-label"><span>01 / CONTEXT</span><i aria-hidden="true">↘</i></div>
+          <div className="story-brief-body"><p className="story-overline">The product and the people using it</p><h2 id="brief-title">{project.contextTitle}</h2><p>{project.context}</p><ul className="story-tags" aria-label="Project focus areas">{project.tags.slice(0, 4).map((tag) => <li key={tag}>{tag}</li>)}</ul></div>
         </section>
 
         <section className="story-friction" id="the-friction" aria-labelledby="friction-title">
-          <div className="story-friction-heading"><p className="story-overline">02 / THE FRICTION</p><h2 id="friction-title">Where the experience broke down</h2></div>
-          <div className="story-friction-copy"><span className="story-pullquote-mark" aria-hidden="true">“</span><p>{project.challenge}</p><span className="story-fineprint">The challenge that shaped the design work</span></div>
+          <div className="story-friction-heading"><p className="story-overline">02 / THE CHALLENGE</p><h2 id="friction-title">Where the work gets difficult</h2></div>
+          <div className="story-friction-copy"><span className="story-pullquote-mark" aria-hidden="true">“</span><p>{project.challenge}</p><span className="story-fineprint">The problem the design needed to address</span></div>
         </section>
 
         <section className="story-decisions" id="design-decisions" aria-labelledby="decisions-title">
-          <div className="story-decisions-intro"><p className="story-overline">03 / DESIGN DECISIONS</p><h2 id="decisions-title">Make the next step easier to see.</h2><p>Rather than add another layer of controls, the work focused on making the system’s logic easier to follow.</p></div>
-          <div className="story-decision-card"><span className="story-decision-number">A</span><div><h3>Bring related work together</h3><p>{project.solution}</p></div></div>
-          <div className="story-decision-card story-gallery-index"><span className="story-decision-number">B</span><div><h3>Follow the interface</h3><ol>{images.map((image, index) => <li key={image}><span>{String(index + 1).padStart(2, '0')}</span>{imageNames[index] ?? `Project screen ${index + 1}`}</li>)}</ol></div></div>
+          <div className="story-decisions-intro"><p className="story-overline">03 / MY DESIGN WORK</p><h2 id="decisions-title">What I changed in the experience</h2><p>{project.solution}</p></div>
+          <ol className="story-work-list">{project.designWork.map((item, index) => <li key={item}><span aria-hidden="true">0{index + 1}</span><p>{item}</p></li>)}</ol>
         </section>
 
         <section className="related-screen" aria-labelledby="related-screen-title">
@@ -120,7 +119,7 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
         </section>
 
         <section className="story-outcome" id="the-outcome" aria-labelledby="outcome-title">
-          <p className="story-overline">04 / THE OUTCOME</p><h2 id="outcome-title">A clearer experience, with impact that matters.</h2><p className="story-outcome-statement">{project.results}</p><div className="story-outcome-bottom"><span>Next case</span><Link href={`/#work`}>Explore the full body of work <span aria-hidden="true">↗</span></Link></div>
+          <p className="story-overline">04 / THE OUTCOME</p><h2 id="outcome-title">What changed</h2><p className="story-outcome-statement">{project.results}</p><div className="story-outcome-bottom"><span>Next case</span><Link href={`/#work`}>Explore the full body of work <span aria-hidden="true">↗</span></Link></div>
         </section>
       </main>
 
