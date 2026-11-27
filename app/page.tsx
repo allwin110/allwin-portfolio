@@ -64,11 +64,11 @@ const experienceTimeline = [
 const categories = ["All", "Enterprise UX", "SaaS UX", "AI & Workflows"];
 
 const networks = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/allwin-alex91/" },
-  { label: "Behance", href: "https://www.behance.net/allwinalex" },
-  { label: "Naukri", href: "https://www.naukri.com/mnjuser/profile" },
-  { label: "Naukri Gulf", href: "https://www.naukrigulf.com/mnj/userProfile/myCV?source=gnbHeader" },
-  { label: "Instagram", href: "https://www.instagram.com/myself_allwin/" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/allwin-alex91/", mark: "in" },
+  { label: "Behance", href: "https://www.behance.net/allwinalex", mark: "Be" },
+  { label: "Naukri", href: "https://www.naukri.com/mnjuser/profile", mark: "N" },
+  { label: "Naukri Gulf", href: "https://www.naukrigulf.com/mnj/userProfile/myCV?source=gnbHeader", mark: "NG" },
+  { label: "Instagram", href: "https://www.instagram.com/myself_allwin/", mark: "◎" },
 ];
 
 export default function Home() {
@@ -243,19 +243,16 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="about-section page-width section-space" id="about" tabIndex={-1} aria-labelledby="about-title">
-          <div className="about-index" data-reveal>
-            <p className="section-kicker">How I work</p>
-            <span className="about-index-number" aria-hidden="true">01</span>
+        <section className="ux-focus page-width section-space" id="about" tabIndex={-1} aria-labelledby="about-title">
+          <div className="ux-focus-heading" data-reveal>
+            <p className="section-kicker">Product design, in practice</p>
+            <h2 id="about-title">I make the next step clear.</h2>
+            <p>From cloud operations to onboarding, I design the moments where people need to understand a system and move work forward.</p>
           </div>
-          <div className="about-content method-content" data-reveal>
-            <h2 id="about-title">Make complex operations easier to understand.</h2>
-            <p className="about-primary method-lead">From service operations to enterprise software, I stay close to the people, decisions, and system rules behind each workflow.</p>
-            <ol className="method-list" aria-label="My design process">
-              <li data-reveal><span>Understand</span><p>Learn who is involved, what they need to decide, and where the process breaks.</p></li>
-              <li data-reveal><span>Structure</span><p>Make roles, states, and next steps easier to see across the product.</p></li>
-              <li data-reveal><span>Validate</span><p>Prototype key flows, test them in context, and shape a buildable direction with engineering.</p></li>
-            </ol>
+          <div className="ux-focus-grid">
+            <article data-reveal><span>01 / SEE THE SYSTEM</span><h3>Complex workflows</h3><p>Map roles, states, permissions, and hand-offs so teams can see how work moves.</p></article>
+            <article data-reveal><span>02 / SHAPE THE FLOW</span><h3>Useful interfaces</h3><p>Turn dense operational tasks into clear dashboards, guided steps, and readable decisions.</p></article>
+            <article data-reveal><span>03 / MAKE IT BUILDABLE</span><h3>Product foundations</h3><p>Bring interaction patterns, accessibility, and engineering constraints into one coherent experience.</p></article>
           </div>
         </section>
 
@@ -380,7 +377,7 @@ export default function Home() {
           </div>
           <div className="experience-list">
             {experienceTimeline.map((job, index) => (
-              <article className="experience-item" key={job.company} data-reveal style={{ "--career-index": index } as CSSProperties}>
+            <article className="experience-item" key={job.company} data-reveal style={{ "--career-index": index } as CSSProperties}>
                 <span className="experience-step" aria-hidden="true">0{index + 1}<span> / 0{experienceTimeline.length}</span></span>
                 <div className="experience-meta">
                   <p>{job.period}</p>
@@ -393,8 +390,8 @@ export default function Home() {
                     <p className="experience-company">{job.company}</p>
                     <Image src={job.logo} alt="" width={120} height={44} className="experience-company-logo" />
                   </div>
-                  <ul>
-                    {job.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}
+                  <ul className="career-highlights">
+                    {job.highlights.map((highlight) => <li key={highlight}><span aria-hidden="true">↗</span><p>{highlight}</p></li>)}
                   </ul>
                 </div>
               </article>
@@ -421,7 +418,7 @@ export default function Home() {
                 <h4>Elsewhere</h4>
                 <ul>
                   {networks.map((network) => (
-                    <li key={network.label}><a href={network.href} target="_blank" rel="noopener noreferrer">{network.label}<span aria-hidden="true">↗</span><span className="visually-hidden"> (opens in a new tab)</span></a></li>
+                    <li key={network.label}><a className="social-mark-link" href={network.href} target="_blank" rel="noopener noreferrer" aria-label={`${network.label} (opens in a new tab)`} title={network.label}><span className="social-mark" aria-hidden="true">{network.mark}</span></a></li>
                   ))}
                 </ul>
               </div>
