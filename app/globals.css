@@ -5649,6 +5649,7 @@ html[data-theme="dark"] .method-list li p { color: #d3deef; }
 /* Career chapters enter independently as each role reaches the reading area. */
 .experience-section { padding-block: clamp(72px, 10vw, 128px); }
 .experience-inner { gap: clamp(44px, 7vw, 96px); }
+.experience-heading { position: relative !important; inset: auto !important; float: none !important; width: min(100%, 1050px); max-width: none; margin: 0 auto 32px !important; padding: 0 34px; }
 .experience-heading h2 { font-size: clamp(42px, 5vw, 64px); line-height: 1.05; letter-spacing: -.045em; }
 .experience-heading .section-description { font-size: 16px; line-height: 1.7; }
 .experience-list { padding-left: 34px; }
@@ -5750,6 +5751,11 @@ html[data-theme="dark"] .experience-summary { color: #d3deef; }
   .experience-detail ul { font-size: 15px; }
   .story-work-list li p { font-size: 15px; }
 }
+@media (min-width: 701px) {
+  .experience-heading { display: flow-root; }
+  .experience-item:first-child { min-height: min(78svh, 720px); }
+}
 @media (prefers-reduced-motion: reduce) {
   .experience-item[data-reveal] { transition-delay: 0ms; }
 }
+
