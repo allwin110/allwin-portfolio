@@ -5688,3 +5688,49 @@ html[data-theme="dark"] .experience-summary { color: #d3deef; }
   .experience-item[data-reveal] { transition-delay: 0ms; }
 }
 
+
+/* Footer social links use recognizable marks and wordmarks, not placeholder initials. */
+.contact-networks ul {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.contact-networks li { display: block; flex: 0 0 auto; width: auto; height: auto; margin: 0; padding: 0; }
+.social-mark-link {
+  box-sizing: border-box;
+  display: grid !important;
+  min-width: 44px;
+  height: 44px;
+  place-items: center;
+  padding: 0 10px !important;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 12px;
+  background: rgba(255,255,255,.07);
+  color: #fff;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
+}
+.social-mark-link:hover { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.42); transform: translateY(-2px); }
+.social-mark-link:focus-visible { outline: 3px solid #9bc7ff; outline-offset: 3px; }
+.social-mark { display: flex; align-items: center; justify-content: center; color: inherit; }
+.social-mark svg { display: block; width: 20px; height: 20px; fill: currentColor; }
+.social-mark-instagram svg rect,
+.social-mark-instagram svg circle { fill: none; stroke: currentColor; stroke-width: 2; }
+.social-mark-instagram svg .social-mark-flash { fill: currentColor; stroke: none; }
+.social-mark-link-naukri { min-width: 78px; }
+.social-mark-link-naukri-gulf { min-width: 92px; }
+.social-wordmark { color: inherit; font-size: 13px; font-weight: 800; letter-spacing: -.045em; line-height: 1; white-space: nowrap; }
+.social-wordmark-behance { font-size: 19px; letter-spacing: -.07em; }
+.social-wordmark-naukri { display: flex; align-items: center; gap: 5px; }
+.social-wordmark-naukri::before { content: ""; width: 9px; height: 9px; flex: 0 0 9px; border-radius: 50%; background: linear-gradient(135deg, #77baff 50%, #ff986b 50%); }
+.social-wordmark-gulf { gap: 5px; }
+.social-wordmark-gulf small { font-size: 8px; letter-spacing: .09em; opacity: .86; }
+@media (prefers-reduced-motion: reduce) {
+  .social-mark-link { transition: none; }
+  .social-mark-link:hover { transform: none; }
+}
