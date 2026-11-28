@@ -64,12 +64,20 @@ const experienceTimeline = [
 const categories = ["All", "Enterprise UX", "SaaS UX", "AI & Workflows"];
 
 const networks = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/allwin-alex91/", mark: "in" },
-  { label: "Behance", href: "https://www.behance.net/allwinalex", mark: "Be" },
-  { label: "Naukri", href: "https://www.naukri.com/mnjuser/profile", mark: "N" },
-  { label: "Naukri Gulf", href: "https://www.naukrigulf.com/mnj/userProfile/myCV?source=gnbHeader", mark: "NG" },
-  { label: "Instagram", href: "https://www.instagram.com/myself_allwin/", mark: "◎" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/allwin-alex91/", mark: "linkedin" },
+  { label: "Behance", href: "https://www.behance.net/allwinalex", mark: "behance" },
+  { label: "Naukri", href: "https://www.naukri.com/mnjuser/profile", mark: "naukri" },
+  { label: "Naukri Gulf", href: "https://www.naukrigulf.com/mnj/userProfile/myCV?source=gnbHeader", mark: "naukri-gulf" },
+  { label: "Instagram", href: "https://www.instagram.com/myself_allwin/", mark: "instagram" },
 ];
+
+function SocialMark({ mark }: { mark: string }) {
+  if (mark === "linkedin") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.2 3.5a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4ZM3.4 9.5H7v11H3.4v-11Zm5.8 0h3.4V11h.05c.47-.9 1.62-1.85 3.34-1.85 3.57 0 4.23 2.35 4.23 5.4v5.95h-3.55v-5.27c0-1.26-.02-2.88-1.76-2.88-1.77 0-2.04 1.38-2.04 2.79v5.36H9.2v-11Z" /></svg>;
+  if (mark === "instagram") return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle className="social-mark-flash" cx="17.6" cy="6.6" r="1" /></svg>;
+  if (mark === "behance") return <span className="social-wordmark social-wordmark-behance" aria-hidden="true">Bē</span>;
+  if (mark === "naukri-gulf") return <span className="social-wordmark social-wordmark-naukri social-wordmark-gulf" aria-hidden="true"><span>naukri</span><small>GULF</small></span>;
+  return <span className="social-wordmark social-wordmark-naukri" aria-hidden="true"><span>naukri</span></span>;
+}
 
 export default function Home() {
   const [theme, setTheme] = useState<"dark" | "light">("light");
@@ -418,7 +426,7 @@ export default function Home() {
                 <h4>Elsewhere</h4>
                 <ul>
                   {networks.map((network) => (
-                    <li key={network.label}><a className="social-mark-link" href={network.href} target="_blank" rel="noopener noreferrer" aria-label={`${network.label} (opens in a new tab)`} title={network.label}><span className="social-mark" aria-hidden="true">{network.mark}</span></a></li>
+                    <li key={network.label}><a className={`social-mark-link social-mark-link-${network.mark}`} href={network.href} target="_blank" rel="noopener noreferrer" aria-label={`${network.label} (opens in a new tab)`} title={network.label}><span className={`social-mark social-mark-${network.mark}`} aria-hidden="true"><SocialMark mark={network.mark} /></span></a></li>
                   ))}
                 </ul>
               </div>
